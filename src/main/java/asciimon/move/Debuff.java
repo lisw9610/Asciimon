@@ -11,4 +11,14 @@ public class Debuff extends Move{
         this.modifiedStat = modifiedStat;
         this.debuffAmount = debuffAmount;
     }
+
+    public String getModifiedStat() {
+        return this.modifiedStat;
+    }
+
+    public Integer getDebuffAmount() {
+        return this.debuffAmount;
+    }
 }
+
+

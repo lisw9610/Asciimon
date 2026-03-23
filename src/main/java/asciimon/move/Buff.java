@@ -12,4 +12,12 @@ public class Buff extends Move{
         this.buffAmount = buffAmount;
     }
 
+    public String getModifiedStat() {
+        return this.modifiedStat;
+    }
+
+    public Integer getBuffAmount() {
+        return this.buffAmount;
+    }
+
 }

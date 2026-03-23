@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PlantType extends Type{
 
+
     public PlantType() {
         List<Type> advantageAgainst = new ArrayList<>();
         List<Type> disadvantageAgainst = new ArrayList<>();
@@ -15,5 +16,7 @@ public class PlantType extends Type{
     public String toString() {
         return "PLANT";
     }
+
+
 
 }

@@ -8,11 +8,17 @@ public abstract class Type {
     private Double advantageModifier;
     private Double disadvantageModifier;
 
-    public Type(List<Type> advantageAgainst, List<Type> disadvantageAgainst) {
+    protected static Type INSTANCE = null;
+
+    protected Type(List<Type> advantageAgainst, List<Type> disadvantageAgainst) {
         this.advantageAgainst = advantageAgainst;
         this.disadvantageAgainst = disadvantageAgainst;
         this.advantageModifier = 2.0;
         this.disadvantageModifier = 0.5;
+    }
+
+    public static Type getInstance() {
+        return INSTANCE;
     }
 
     public Double getAdvantageModifier() {
@@ -41,6 +47,6 @@ public abstract class Type {
         return false;
     }
 
-    abstract public String toString();
+    public abstract String toString();
 
 }

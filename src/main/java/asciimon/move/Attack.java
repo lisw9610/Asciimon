@@ -10,4 +10,8 @@ public class Attack extends Move{
         this.attackDamage = attackDamage;
     }
 
+    public Integer getAttackDamage() {
+        return this.attackDamage;
+    }
+
 }

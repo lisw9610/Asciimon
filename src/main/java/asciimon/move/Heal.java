@@ -10,4 +10,8 @@ public class Heal extends Move{
         this.healAmount = healAmount;
     }
 
+    public Integer getHealAmount() {
+        return this.healAmount;
+    }
+
 }

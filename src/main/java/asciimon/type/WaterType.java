@@ -5,6 +5,7 @@ import java.util.List;
 
 public class WaterType extends Type{
 
+
     public WaterType() {
         List<Type> advantageAgainst = new ArrayList<>();
         List<Type> disadvantageAgainst = new ArrayList<>();
