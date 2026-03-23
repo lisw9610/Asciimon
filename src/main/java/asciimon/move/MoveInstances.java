@@ -11,9 +11,9 @@ public class MoveInstances {
         new Attack("watergun", TypeInstances.WATER_INSTANCE.getInstance(), 10),
         new Attack("discharge", TypeInstances.ELECTRIC_INSTANCE.getInstance(), 10),
         new Attack("razorleaf", TypeInstances.PLANT_INSTANCE.getInstance(), 10),
-        new Support("restoration", TypeInstances.PLANT_INSTANCE.getInstance(), "health", 10),
-        new Debuff("paralyze", TypeInstances.ELECTRIC_INSTANCE.getInstance(), "speed", 10),
-        new Support("overheat", TypeInstances.FIRE_INSTANCE.getInstance(), "attack", 10)
+        new Heal("restoration", TypeInstances.PLANT_INSTANCE.getInstance(), 10),
+        new Debuff("paralyze", TypeInstances.ELECTRIC_INSTANCE.getInstance(), "speed", 10, 2),
+        new Buff("overheat", TypeInstances.FIRE_INSTANCE.getInstance(), "attack", 10, 2)
     );
     
     public static Move getMoveInstance(String moveName) {
