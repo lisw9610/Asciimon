@@ -3,7 +3,7 @@ package src.main.java.asciimon.card;
 import java.util.Arrays;
 import java.util.List;
 
-import src.main.java.asciimon.move.SingletonMoves;
+import src.main.java.asciimon.move.MoveInstances;
 import src.main.java.asciimon.type.TypeInstances;
 
 public class WaterSlime extends Card {
@@ -13,7 +13,7 @@ public class WaterSlime extends Card {
 
         super(name, 10, 10, 10, 10, nextLevelExperienceCounts, TypeInstances.WATER_INSTANCE.getInstance());
     
-        this.learnMove(SingletonMoves.getMoveInstance("watergun"));
+        this.learnMove(MoveInstances.getMoveInstance("watergun"));
     }
 
 }
