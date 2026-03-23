@@ -88,16 +88,24 @@ public abstract class Card {
         return this.baseAttack;
     }
 
-    public void changeAttackModifier(Integer modifier) {
-
+    public Integer getModifiedAttack(Integer modifier) {
+        return this.baseAttack + this.attackModifier;
     }
 
     public Integer getBaseDefense() {
         return this.baseDefense;
     }
 
+    public Integer getModifiedDefense(Integer modifier) {
+        return this.baseDefense + this.defenseModifier;
+    }
+
     public Integer getBaseSpeed() {
         return this.baseSpeed;
+    }
+
+    public Integer getModifiedSpeed(Integer modifier) {
+        return this.baseSpeed + this.speedModifier;
     }
 
     public Type getType() {
@@ -142,7 +150,9 @@ public abstract class Card {
         return moves.get(moveIndex);
     }
 
-    public void doPositiveStatusEffect(String impactedStat, Integer statImpact, Integer turnCount) {
+    public void modifyStatus(Move move) {
+        String impactedStat = move.getImpactedStat();
+        Integer statImpact = move.getStatImpact();
         switch(impactedStat.toLowerCase()) {
             case "health":
                 healDamage(statImpact);
@@ -155,25 +165,6 @@ public abstract class Card {
                 break;
             case "speed":
                 this.speedModifier += statImpact;
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void doNegativeStatusEffect(String impactedStat, Integer statImpact, Integer turnCount) {
-        switch(impactedStat.toLowerCase()) {
-            case "health":
-                takeDamage(statImpact);
-                break;
-            case "attack":
-                this.attackModifier -= statImpact;
-                break;
-            case "defense":
-                this.defenseModifier -= statImpact;
-                break;
-            case "speed":
-                this.speedModifier -= statImpact;
                 break;
             default:
                 break;

@@ -5,18 +5,18 @@ import src.main.java.asciimon.type.Type;
 public abstract class Move {
     private String moveName;
     private Type moveType;
-    private String modifiedStat;
-    private Integer statModifier;
-    private Integer modifierDuration;
+    private String impactedStat;
+    private Integer statImpact;
+    private Integer impactDuration;
     private boolean targetsEnemy; //true if it targets an enemy(attack and debuff) and false if it targets self(support)
 
 
-    public Move(String moveName, Type moveType, String modifiedStat, Integer statModifier, Integer modifierDuration, boolean targetsEnemy) {
+    public Move(String moveName, Type moveType, String impactedStat, Integer statImpact, Integer impactDuration, boolean targetsEnemy) {
         this.moveName = moveName;
         this.moveType = moveType;
-        this.modifiedStat = modifiedStat;
-        this.statModifier = statModifier;
-        this.modifierDuration = modifierDuration;
+        this.impactedStat = impactedStat;
+        this.statImpact = statImpact;
+        this.impactDuration = impactDuration;
         this.targetsEnemy = targetsEnemy;
     }
 
@@ -28,16 +28,16 @@ public abstract class Move {
         return this.moveType;
     }
 
-    public String getMofidiedStat() {
-        return this.modifiedStat;
+    public String getImpactedStat() {
+        return this.impactedStat;
     }
 
-    public Integer getStatModifier() {
-        return this.statModifier;
+    public Integer getStatImpact() {
+        return this.statImpact;
     }
 
-    public Integer getModifierDuration() {
-        return this.modifierDuration;
+    public Integer getImpactDuration() {
+        return this.impactDuration;
     }
 
     public boolean targetsEnemy() {
