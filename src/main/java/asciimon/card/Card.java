@@ -11,26 +11,34 @@ public abstract class Card {
     private Integer level;
     private Integer experience;
     private List<Integer> nextLevelExperienceCounts; //List of experience needed to level up for each level. Index 0 for level 2, index 1 for level 3, and so on.
+    private final List<Integer> statIncreaseOnLevelUp; //Stores the amount each base card stat increases in the order (health, attack, defense, speed)
     private Integer health;
     private Integer maxHealth;
-    private Integer attack;
-    private Integer defense;
-    private Integer speed;
+    private Integer attackModifier = 0;
+    private Integer baseAttack;
+    private Integer defenseModifier = 0;
+    private Integer baseDefense;
+    private Integer speedModifier = 0;
+    private Integer baseSpeed;
     private Type type;
 
     private final Integer maximumMoveCount = 4;
+    private Integer currentMoveCount = 0;
     private List<Move> moves = new ArrayList<>();
 
-    public Card(String name, Integer health, Integer attack, Integer defense, Integer speed, List<Integer> nextLevelExperienceCounts, Type type) {
+
+
+    public Card(String name, Integer health, Integer attack, Integer defense, Integer speed, List<Integer> nextLevelExperienceCounts, List<Integer> statIncreaseOnLevelUp, Type type) {
         this.name = name;
         this.level = 1;
         this.experience = 0;
         this.nextLevelExperienceCounts = nextLevelExperienceCounts;
+        this.statIncreaseOnLevelUp = statIncreaseOnLevelUp;
         this.maxHealth = health;
         this.health = health;
-        this.attack = attack;
-        this.defense = defense;
-        this.speed = speed;
+        this.baseAttack = attack;
+        this.baseDefense = defense;
+        this.baseSpeed = speed;
         this.type = type;
     }
 
@@ -50,6 +58,10 @@ public abstract class Card {
         return this.nextLevelExperienceCounts.get(level - 1);
     }
 
+    public void gainExperience(Integer gainedExp) {
+        this.experience += gainedExp;
+    }
+
     public Integer getMaxHealth() {
         return this.maxHealth;
     }
@@ -58,16 +70,34 @@ public abstract class Card {
         return this.health;
     }
 
-    public Integer getAttack() {
-        return this.attack;
+    public void takeDamage(Integer takenDamage) {
+        this.health -= takenDamage;
+        if(this.health < 0) {
+            this.health = 0;
+        }
     }
 
-    public Integer getDefense() {
-        return this.defense;
+    public void healDamage(Integer healAmount) {
+        this.health += healAmount;
+        if(this.health > this.maxHealth) {
+            this.health = this.maxHealth;
+        }
     }
 
-    public Integer getSpeed() {
-        return this.speed;
+    public Integer getBaseAttack() {
+        return this.baseAttack;
+    }
+
+    public void changeAttackModifier(Integer modifier) {
+
+    }
+
+    public Integer getBaseDefense() {
+        return this.baseDefense;
+    }
+
+    public Integer getBaseSpeed() {
+        return this.baseSpeed;
     }
 
     public Type getType() {
@@ -78,11 +108,88 @@ public abstract class Card {
         return this.maximumMoveCount;
     }
 
-    public void learnMove(Move move) {
-        moves.add(move);
+    public boolean canLevelUp() {
+        if(this.experience >= this.getExperienceForNextLevel()) {
+            return true;
+        }
+        return false;
     }
 
-    public void forgetMove() {
-        moves.removeLast();
+    public void doLevelUp() {
+        if(canLevelUp()) {
+            this.level += 1;
+            this.experience = this.experience - this.getExperienceForNextLevel();
+            this.maxHealth += this.statIncreaseOnLevelUp.get(0); 
+            this.baseAttack += this.statIncreaseOnLevelUp.get(1);
+            this.baseDefense += this.statIncreaseOnLevelUp.get(2);
+            this.baseSpeed += this.statIncreaseOnLevelUp.get(3);
+        }
     }
+
+    public void learnMove(Move move) {
+        if(currentMoveCount < maximumMoveCount) {
+            moves.add(move);
+            currentMoveCount += 1;
+        }
+    }
+
+    public void forgetMove(Move move) {
+        moves.remove(move);
+        currentMoveCount -= 1;
+    }
+
+    public Move playMove(Integer moveIndex) {
+        return moves.get(moveIndex);
+    }
+
+    public void doPositiveStatusEffect(String impactedStat, Integer statImpact, Integer turnCount) {
+        switch(impactedStat.toLowerCase()) {
+            case "health":
+                healDamage(statImpact);
+                break;
+            case "attack":
+                this.attackModifier += statImpact;
+                break;
+            case "defense":
+                this.defenseModifier += statImpact;
+                break;
+            case "speed":
+                this.speedModifier += statImpact;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void doNegativeStatusEffect(String impactedStat, Integer statImpact, Integer turnCount) {
+        switch(impactedStat.toLowerCase()) {
+            case "health":
+                takeDamage(statImpact);
+                break;
+            case "attack":
+                this.attackModifier -= statImpact;
+                break;
+            case "defense":
+                this.defenseModifier -= statImpact;
+                break;
+            case "speed":
+                this.speedModifier -= statImpact;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public boolean isDead() {
+        if (this.health == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
 }

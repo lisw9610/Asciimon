@@ -10,8 +10,9 @@ public class ElectricSlime extends Card {
     
     public ElectricSlime(String name) {
         List<Integer> nextLevelExperienceCounts = Arrays.asList(100, 200, 300, 400, 500);
+        List<Integer> statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
 
-        super(name, 10, 10, 10, 10, nextLevelExperienceCounts, TypeInstances.ELECTRIC_INSTANCE.getInstance());
+        super(name, 10, 10, 10, 10, nextLevelExperienceCounts, statIncreaseOnLevelUp, TypeInstances.ELECTRIC_INSTANCE.getInstance());
 
         this.learnMove(MoveInstances.getMoveInstance("discharge"));
         this.learnMove(MoveInstances.getMoveInstance("paralyza"));

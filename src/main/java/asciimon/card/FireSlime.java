@@ -10,8 +10,9 @@ public class FireSlime extends Card {
     
     public FireSlime(String name) {
         List<Integer> nextLevelExperienceCounts = Arrays.asList(100, 200, 300, 400, 500);
+        List<Integer> statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
 
-        super(name, 10, 10, 10, 10, nextLevelExperienceCounts, TypeInstances.FIRE_INSTANCE.getInstance());
+        super(name, 10, 10, 10, 10, nextLevelExperienceCounts, statIncreaseOnLevelUp, TypeInstances.FIRE_INSTANCE.getInstance());
 
         this.learnMove(MoveInstances.getMoveInstance("fireball"));
         this.learnMove(MoveInstances.getMoveInstance("overheat"));
