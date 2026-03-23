@@ -3,6 +3,7 @@ package src.main.java.asciimon.card;
 import java.util.Arrays;
 import java.util.List;
 
+import src.main.java.asciimon.move.SingletonMoves;
 import src.main.java.asciimon.type.TypeInstances;
 
 public class ElectricSlime extends Card {
@@ -12,6 +13,8 @@ public class ElectricSlime extends Card {
 
         super(name, 10, 10, 10, 10, nextLevelExperienceCounts, TypeInstances.ELECTRIC_INSTANCE.getInstance());
 
+        this.learnMove(SingletonMoves.getMoveInstance("discharge"));
+        this.learnMove(SingletonMoves.getMoveInstance("paralyza"));
     }
 
 }
