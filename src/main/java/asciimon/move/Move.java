@@ -1,10 +1,12 @@
 package src.main.java.asciimon.move;
 
+import src.main.java.asciimon.type.Type;
+
 public abstract class Move {
     protected String moveName;
-    protected String moveType;
+    protected Type moveType;
 
-    public Move(String moveName, String moveType) {
+    public Move(String moveName, Type moveType) {
         this.moveName = moveName;
         this.moveType = moveType;
     }
@@ -13,7 +15,7 @@ public abstract class Move {
         return this.moveName;
     }
 
-    public String getType() {
+    public Type getType() {
         return this.moveType;
     }
 

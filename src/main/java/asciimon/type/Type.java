@@ -25,7 +25,7 @@ public abstract class Type {
 
     public boolean hasAdvantageAgainst(Type type) {
         for(Type advantageType : advantageAgainst) {
-            if(advantageType.getClass().equals(type.getClass())) {
+            if(advantageType.toString().equals(type.toString())) {
                 return true;
             }
         }
@@ -34,10 +34,13 @@ public abstract class Type {
 
     public boolean hasDisadvantageAgainst(Type type) {
         for(Type disadvantageAgainst : disadvantageAgainst) {
-            if(disadvantageAgainst.getClass().equals(type.getClass())) {
+            if(disadvantageAgainst.toString().equals(type.toString())) {
                 return true;
             }
         }
         return false;
     }
+
+    abstract public String toString();
+
 }
