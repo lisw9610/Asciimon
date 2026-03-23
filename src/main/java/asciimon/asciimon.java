@@ -1,5 +1,5 @@
 package src.main.java.asciimon;
 
-public class asciimon {
-
+public class Asciimon {
+    
 }
