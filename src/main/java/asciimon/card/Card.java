@@ -146,13 +146,18 @@ public abstract class Card {
         currentMoveCount -= 1;
     }
 
-    public Move playMove(Integer moveIndex) {
-        return moves.get(moveIndex);
-    }
+    public void pickAndApplyMove(Integer moveIndex, Card enemyCard) {
+        Move playedMove = moves.get(moveIndex);
+        String impactedStat = playedMove.getImpactedStat();
+        Integer statImpact = playedMove.getStatImpact();
+        boolean targetsEnemy = playedMove.targetsEnemy();
+        
+        if(targetsEnemy) {
 
-    public void modifyStatus(Move move) {
-        String impactedStat = move.getImpactedStat();
-        Integer statImpact = move.getStatImpact();
+        } else {
+
+        }
+
         switch(impactedStat.toLowerCase()) {
             case "health":
                 healDamage(statImpact);
@@ -180,7 +185,7 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return "";
+        return this.name + " - lv." + this.level + "(" + this.experience + "/" + this.getExperienceForNextLevel() + ")\n";
     }
 
 }
