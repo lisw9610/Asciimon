@@ -1,4 +1,4 @@
-package src.main.java.asciimon;
+package asciimon;
 
 public class Asciimon {
     

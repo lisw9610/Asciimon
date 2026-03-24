@@ -1,4 +1,4 @@
-package src.main.java.asciimon.type;
+package asciimon.type;
 
 public enum TypeInstances {
     ELECTRIC_INSTANCE(new ElectricType()),

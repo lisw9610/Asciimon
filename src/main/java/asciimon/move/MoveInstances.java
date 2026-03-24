@@ -1,9 +1,9 @@
-package src.main.java.asciimon.move;
+package asciimon.move;
 
 import java.util.Arrays;
 import java.util.List;
 
-import src.main.java.asciimon.type.TypeInstances;
+import asciimon.type.TypeInstances;
 
 public class MoveInstances {
     private static List<Move> possibleMoves = Arrays.asList(
@@ -16,6 +16,8 @@ public class MoveInstances {
         new Buff("overheat", TypeInstances.FIRE_INSTANCE.getInstance(), "attack", 10, 2)
     );
     
+    private MoveInstances() {}
+
     public static Move getMoveInstance(String moveName) {
         switch(moveName.toLowerCase()) {
             case "fireball":

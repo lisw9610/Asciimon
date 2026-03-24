@@ -1,6 +1,6 @@
-package src.main.java.asciimon.move;
+package asciimon.move;
 
-import src.main.java.asciimon.type.Type;
+import asciimon.type.Type;
 
 public abstract class Move {
     private String moveName;

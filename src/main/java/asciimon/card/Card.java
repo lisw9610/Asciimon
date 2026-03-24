@@ -1,10 +1,10 @@
-package src.main.java.asciimon.card;
+package asciimon.card;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import src.main.java.asciimon.move.Move;
-import src.main.java.asciimon.type.Type;
+import asciimon.move.Move;
+import asciimon.type.Type;
 
 public abstract class Card {
     private String name;
@@ -125,8 +125,9 @@ public abstract class Card {
 
     public void doLevelUp() {
         if(canLevelUp()) {
-            this.level += 1;
             this.experience = this.experience - this.getExperienceForNextLevel();
+
+            this.level += 1;
             this.maxHealth += this.statIncreaseOnLevelUp.get(0); 
             this.baseAttack += this.statIncreaseOnLevelUp.get(1);
             this.baseDefense += this.statIncreaseOnLevelUp.get(2);
@@ -146,18 +147,7 @@ public abstract class Card {
         currentMoveCount -= 1;
     }
 
-    public void pickAndApplyMove(Integer moveIndex, Card enemyCard) {
-        Move playedMove = moves.get(moveIndex);
-        String impactedStat = playedMove.getImpactedStat();
-        Integer statImpact = playedMove.getStatImpact();
-        boolean targetsEnemy = playedMove.targetsEnemy();
-        
-        if(targetsEnemy) {
-
-        } else {
-
-        }
-
+    private void handleMoveTargetingSelf(String impactedStat, Integer statImpact) {
         switch(impactedStat.toLowerCase()) {
             case "health":
                 healDamage(statImpact);
@@ -173,6 +163,38 @@ public abstract class Card {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void handleMoveTargetingEnemy(Card enemyCard, String impactedStat, Integer statImpact) {
+        switch(impactedStat.toLowerCase()) {
+            case "health":
+                enemyCard.takeDamage(statImpact);
+                break;
+            case "attack":
+                this.attackModifier += statImpact;
+                break;
+            case "defense":
+                this.defenseModifier += statImpact;
+                break;
+            case "speed":
+                this.speedModifier += statImpact;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void doTurn(Integer moveIndex, Card enemyCard) {
+        Move playedMove = moves.get(moveIndex);
+        String impactedStat = playedMove.getImpactedStat();
+        Integer statImpact = playedMove.getStatImpact();
+        boolean targetsEnemy = playedMove.targetsEnemy();
+        
+        if(targetsEnemy) {
+            handleMoveTargetingEnemy(enemyCard, impactedStat, statImpact);
+        } else {
+            handleMoveTargetingSelf(impactedStat, statImpact);
         }
     }
 

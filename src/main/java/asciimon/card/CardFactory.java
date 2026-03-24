@@ -1,4 +1,4 @@
-package src.main.java.asciimon.card;
+package asciimon.card;
 
 public class CardFactory {
     public static Card createCard(String name, String cardName) {

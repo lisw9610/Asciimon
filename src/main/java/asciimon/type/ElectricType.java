@@ -1,4 +1,4 @@
-package src.main.java.asciimon.type;
+package asciimon.type;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 public class ElectricType extends Type{
 
     public ElectricType() {
-        List<Type> advantageAgainst = Arrays.asList(TypeInstances.WATER_INSTANCE.getInstance());
-        List<Type> disadvantageAgainst = Arrays.asList(TypeInstances.PLANT_INSTANCE.getInstance());
+        List<String> advantageAgainst = Arrays.asList("WATER");
+        List<String> disadvantageAgainst = Arrays.asList("PLANT");
 
         super(advantageAgainst, disadvantageAgainst);
     }
