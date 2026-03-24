@@ -9,7 +9,6 @@ public enum TypeInstances {
 
     private Type typeInstance;
 
-    // Constructor (runs once for each constant above)
     private TypeInstances(Type typeInstance) {
         this.typeInstance = typeInstance;
     }

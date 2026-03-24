@@ -7,8 +7,8 @@ import asciimon.card.Card;
 
 public class Deck {
     private Integer maxDeckSize;
-    private List<Card> deck;
-    private List<Card> discarded;
+    private List<Card> deck = new ArrayList<>();
+    private List<Card> discarded = new ArrayList<>();
     private Card inPlay = null;
 
     private Deck(DeckBuilder builder) {
@@ -19,6 +19,8 @@ public class Deck {
     public void pickCard(Integer cardIndex) {
         if(cardIndex >= 0 && cardIndex < maxDeckSize) {
             this.inPlay = deck.get(cardIndex);
+        } else {
+            this.inPlay = null;
         }
     }
 
@@ -26,9 +28,10 @@ public class Deck {
         return this.inPlay;
     }
 
-    public void discard(Card discardedCard) {
-        deck.remove(discardedCard);
-        discarded.add(discardedCard);
+    public void discardCardInPlay() {
+        deck.remove(inPlay);
+        discarded.add(inPlay);
+        this.inPlay = null;
     }
 
     public static class DeckBuilder {
