@@ -35,8 +35,8 @@ public class CardFactory {
         switch(cardName.toLowerCase()) {
             case "fire_slime":
                 experienceModifier = 1;
-                statIncreaseOnLevelUp = Arrays.asList(10, 1, 1, 1);
-                baseStats = Arrays.asList(100, 10, 10, 10);
+                statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
+                baseStats = Arrays.asList(10, 10, 10, 10);
 
                 asciiArt = readAsciiArt("slime.txt");
                 
@@ -44,8 +44,8 @@ public class CardFactory {
 
             case "water_slime":
                 experienceModifier = 1;
-                statIncreaseOnLevelUp = Arrays.asList(10, 1, 1, 1);
-                baseStats = Arrays.asList(100, 10, 10, 10);
+                statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
+                baseStats = Arrays.asList(10, 10, 10, 10);
 
                 asciiArt = readAsciiArt("slime.txt");
 
@@ -53,8 +53,8 @@ public class CardFactory {
 
             case "electric_slime":
                 experienceModifier = 1;
-                statIncreaseOnLevelUp = Arrays.asList(10, 1, 1, 1);
-                baseStats = Arrays.asList(100, 10, 10, 10);
+                statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
+                baseStats = Arrays.asList(10, 10, 10, 10);
 
                 asciiArt = readAsciiArt("slime.txt");
 
@@ -63,8 +63,8 @@ public class CardFactory {
                 
             case "plant_slime":
                 experienceModifier = 1;
-                statIncreaseOnLevelUp = Arrays.asList(10, 1, 1, 1);
-                baseStats = Arrays.asList(100, 10, 10, 10);
+                statIncreaseOnLevelUp = Arrays.asList(1, 1, 1, 1);
+                baseStats = Arrays.asList(10, 10, 10, 10);
 
                 asciiArt = readAsciiArt("slime.txt");
 

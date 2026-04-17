@@ -19,7 +19,7 @@ public abstract class Card {
     private final List<String> statNames = Arrays.asList("Health", "Attack", "Defense", "Speed");
     private List<Integer> baseStats; //Stores the cards stats in the order (health, attack, defense, speed)
     private List<Integer> statModifiers = Arrays.asList(0, 0, 0, 0); //Stores the modifiers applied by buff and debuff moves to each stat in the order (health, attack, defense, speed)
-    private Integer health;
+    private Integer healthPoints;
     private final Type type;
 
     private final Integer maximumMoveCount = 4;
@@ -39,9 +39,14 @@ public abstract class Card {
         this.requiredExperienceIncreaseModifier = experienceModifier;
         this.requiredExperience = this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier;
         this.statIncreaseOnLevelUp = statIncreaseOnLevelUp;
-        this.health = baseStats.get(0);
+        this.healthPoints = baseStats.get(0) * 10;
         this.baseStats = baseStats;
         this.type = type;
+    }
+
+    public void reset() {
+        this.healthPoints = getMaxHealthPoints();
+        this.statModifiers.replaceAll(_ -> 0);
     }
 
     public String getName() {
@@ -79,12 +84,16 @@ public abstract class Card {
         this.doLevelUp();
     }
 
-    public Integer getMaxHealth() {
-        return this.baseStats.get(0);
+    public Integer getMaxHealthPoints() {
+        return this.baseStats.get(0) * 10;
+    }
+
+    public Integer getHealthPoints() {
+        return this.healthPoints;
     }
 
     public Integer getHealth() {
-        return this.health;
+        return this.baseStats.get(0);
     }
 
     public Integer getBaseAttack() {
@@ -133,7 +142,7 @@ public abstract class Card {
             this.updateExperienceForNextLevel();
 
             this.level += 1;
-            this.baseStats.set(0, getMaxHealth() + this.statIncreaseOnLevelUp.get(0));
+            this.baseStats.set(0, getHealth() + this.statIncreaseOnLevelUp.get(0));
             this.baseStats.set(1, getBaseAttack() + this.statIncreaseOnLevelUp.get(1));
             this.baseStats.set(2, getBaseDefense() + this.statIncreaseOnLevelUp.get(2));
             this.baseStats.set(3, getBaseSpeed() + this.statIncreaseOnLevelUp.get(3));
@@ -142,16 +151,16 @@ public abstract class Card {
     }
 
     public void takeDamage(Integer takenDamage) {
-        this.health -= takenDamage;
-        if(this.health < 0) {
-            this.health = 0;
+        this.healthPoints -= takenDamage;
+        if(this.healthPoints < 0) {
+            this.healthPoints = 0;
         }
     }
 
     public void healDamage(Integer healAmount) {
-        this.health += healAmount;
-        if(this.health > getMaxHealth()) {
-            this.health = getMaxHealth();
+        this.healthPoints += healAmount;
+        if(this.healthPoints > getMaxHealthPoints()) {
+            this.healthPoints = getMaxHealthPoints();
         }
     }
 
@@ -231,7 +240,7 @@ public abstract class Card {
     }
 
     public boolean isDead() {
-        if (this.health == 0) {
+        if (this.healthPoints == 0) {
             return true;
         }
         return false;
@@ -263,7 +272,7 @@ public abstract class Card {
         //builds info column lines (name, level, HP, stats, moves)
         info.add(String.format("%-" + INFO_WIDTH + "s", this.toString()));
         info.add(String.format("%-" + INFO_WIDTH + "s", "Type: " + (this.getType() == null ? "—" : this.getType())));
-        info.add(String.format("%-" + INFO_WIDTH + "s", "HP: " + this.getHealth() + " / " + this.getMaxHealth()));
+        info.add(String.format("%-" + INFO_WIDTH + "s", "HP: " + this.getHealthPoints() + " / " + this.getMaxHealthPoints()));
         info.add(String.format("%-" + INFO_WIDTH + "s", ""));
 
 
