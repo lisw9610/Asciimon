@@ -16,22 +16,30 @@ public class Deck {
         this.deck = builder.deck;
     }
 
-    public void pickCard(Integer cardIndex) {
+    public Card pickCard(Integer cardIndex) {
         if(cardIndex >= 0 && cardIndex < maxDeckSize) {
             this.inPlay = deck.get(cardIndex);
         } else {
             this.inPlay = null;
         }
+
+        return getCardInPlay();
     }
+
 
     public Card getCardInPlay() {
         return this.inPlay;
     }
 
     public void discardCardInPlay() {
-        deck.remove(inPlay);
-        discarded.add(inPlay);
+        deck.remove(this.inPlay);
+        discarded.add(this.inPlay);
         this.inPlay = null;
+    }
+
+    @Override
+    public String toString() {
+        return "";
     }
 
     public static class DeckBuilder {
@@ -50,7 +58,10 @@ public class Deck {
         }
 
         public DeckBuilder addCard(Card card) {
-            deck.add(card);
+            if (deck.size() < this.maxDeckSize) {
+                deck.add(card);
+            }
+            
             return this;
         }
 

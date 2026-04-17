@@ -36,7 +36,7 @@ public abstract class Card {
         this.level = 1;
         this.experience = 0;
         this.requiredExperienceIncreaseModifier = experienceModifier;
-        this.requiredExperience = this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier;
+        this.requiredExperience = this.level * this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier;
         this.statIncreaseOnLevelUp = statIncreaseOnLevelUp;
         this.healthPoints = baseStats.get(0) * 10;
         this.baseStats = baseStats;
@@ -52,16 +52,6 @@ public abstract class Card {
         return this.name;
     }
 
-    public String getAsciiArt() {
-        return this.asciiArt;
-    }
-
-    public String getCardGraphic() {
-        String cardGraphic = "";
-
-        return String.format(cardGraphic);
-    }
-
     public Integer getLevel() {
         return this.level;
     }
@@ -75,7 +65,7 @@ public abstract class Card {
     }
 
     private void updateExperienceForNextLevel() {
-        this.requiredExperience = this.requiredExperience + (this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier);
+        this.requiredExperience = this.level * this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier;
     }
 
     public void gainExperience(Integer gainedExp) {

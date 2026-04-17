@@ -12,6 +12,7 @@ import asciimon.type.Type;
 import asciimon.type.TypeInstances;
 import asciimon.card.Card;
 import asciimon.card.CardFactory;
+import asciimon.move.MoveInstances;
 
 class CardTest {
 
@@ -109,14 +110,6 @@ class CardTest {
     }
 
     @Test
-    void testToString_containsLevelAndExpAndName() {
-        String s = testCard.toString();
-        assertTrue(s.contains("Tester"));
-        assertTrue(s.contains("lv.1"));
-        assertTrue(s.contains("0/10"));
-    }
-
-    @Test
     void testCardFactory_createsKnownTypes() {
         Card c1 = CardFactory.createCard("A", "fire_slime");
         Card c2 = CardFactory.createCard("B", "water_slime");
@@ -129,6 +122,38 @@ class CardTest {
         assertNotNull(c4);
 
         assertNull(CardFactory.createCard("X", "unknown"));
+    }
+
+    @Test
+    void testRenderCard() {
+        testCard.learnMove(MoveInstances.getMoveInstance("fireball"));
+
+        String card = testCard.renderCard();
+        assertTrue(card.contains("Tester - lv.1(0/100"));
+        assertTrue(card.contains("Type: ELECTRIC"));
+        assertTrue(card.contains("HP: 50 / 50"));
+        assertTrue(card.contains("Health    : 5"));
+        assertTrue(card.contains("Attack    : 1"));
+        assertTrue(card.contains("Defense   : 2"));
+        assertTrue(card.contains("Speed     : 3"));
+        assertTrue(card.contains("fireball"));
+
+        testCard.gainExperience(150);
+        testCard.learnMove(MoveInstances.getMoveInstance("discharge"));
+        testCard.forgetMove(MoveInstances.getMoveInstance("fireball"));
+        testCard.reset();
+
+        card = testCard.renderCard();
+        assertTrue(card.contains("Tester - lv.2(50/100"));
+        assertTrue(card.contains("Type: ELECTRIC"));
+        assertTrue(card.contains("HP: 100 / 100"));
+        assertTrue(card.contains("Health    : 10"));
+        assertTrue(card.contains("Attack    : 2"));
+        assertTrue(card.contains("Defense   : 4"));
+        assertTrue(card.contains("Speed     : 6"));
+        assertFalse(card.contains("fireball"));
+        assertTrue(card.contains("discharge"));
+
     }
 
 }
