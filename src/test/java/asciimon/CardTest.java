@@ -17,17 +17,19 @@ class CardTest {
 
     private Card testCard;
 
-    static class DummyCard extends Card {
-        DummyCard(String name, Integer health, Integer attack, Integer defense, Integer speed, List<Integer> nextLevelExp, List<Integer> statIncrease, Type type) {
-            super(name, health, attack, defense, speed, nextLevelExp, statIncrease, type);
+    private class DummyCard extends Card {
+        DummyCard(String name, String asciiArt, List<Integer> baseStats, Integer experienceModifier, List<Integer> statIncreaseOnLevelUp, Type type) {
+            super(name, asciiArt, baseStats, experienceModifier, statIncreaseOnLevelUp, type);
         }
     }
 
     @BeforeEach
     void setup() {
-        List<Integer> nextLevelExp = Arrays.asList(10, 20, 30);
-        List<Integer> statIncrease = Arrays.asList(5, 1, 2, 3); // health, atk, def, spd
-        testCard = new DummyCard("Tester", 50, 10, 8, 7, nextLevelExp, statIncrease, TypeInstances.ELECTRIC_INSTANCE.getInstance());
+        String asciiArt = "---";
+        List<Integer> baseStats = Arrays.asList(5, 1, 2, 3);
+        Integer experienceModifier = 1;
+        List<Integer> statIncreaseOnLevelUp = Arrays.asList(5, 1, 2, 3); // health, atk, def, spd
+        testCard = new DummyCard("Tester", asciiArt, baseStats, experienceModifier, statIncreaseOnLevelUp, TypeInstances.ELECTRIC_INSTANCE.getInstance());
     }
 
     @Test
@@ -35,73 +37,75 @@ class CardTest {
         assertEquals("Tester", testCard.getName());
         assertEquals(1, testCard.getLevel());
         assertEquals(0, testCard.getCurrentExp());
-        assertEquals(10, testCard.getExperienceForNextLevel());
-        assertEquals(50, testCard.getMaxHealth());
-        assertEquals(50, testCard.getHealth());
-        assertEquals(10, testCard.getBaseAttack());
-        assertEquals(8, testCard.getBaseDefense());
-        assertEquals(7, testCard.getBaseSpeed());
+        assertEquals(100, testCard.getExperienceForNextLevel());
+        assertEquals(50, testCard.getMaxHealthPoints());
+        assertEquals(50, testCard.getHealthPoints());
+        assertEquals(5, testCard.getHealth());
+        assertEquals(1, testCard.getBaseAttack());
+        assertEquals(2, testCard.getBaseDefense());
+        assertEquals(3, testCard.getBaseSpeed());
         assertEquals(TypeInstances.ELECTRIC_INSTANCE.getInstance(), testCard.getType());
         assertEquals(4, testCard.getMaxMoveCount());
     }
 
     @Test
     void testGainExperienceAndCanLevelUp() {
-        testCard.gainExperience(5);
-        assertEquals(5, testCard.getCurrentExp());
-        assertFalse(testCard.canLevelUp());
+        assertEquals(1, testCard.getLevel());
+        testCard.gainExperience(50);
+        assertEquals(50, testCard.getCurrentExp());
+        assertEquals(1, testCard.getLevel());
 
-        testCard.gainExperience(5);
-        assertEquals(10, testCard.getCurrentExp());
-        assertTrue(testCard.canLevelUp());
+        testCard.gainExperience(50);
+        assertEquals(0, testCard.getCurrentExp());
+        assertEquals(2, testCard.getLevel());
     }
 
     @Test
     void testDoLevelUp() {
-        testCard.gainExperience(12);
-        assertTrue(testCard.canLevelUp());
-        testCard.doLevelUp();
+        assertEquals(1, testCard.getLevel());
+
+        testCard.gainExperience(102);
 
         assertEquals(2, testCard.getLevel());
         assertEquals(2, testCard.getCurrentExp());
  
-        assertEquals(55, testCard.getMaxHealth());
-        assertEquals(11, testCard.getBaseAttack());
-        assertEquals(10, testCard.getBaseDefense()); 
-        assertEquals(10, testCard.getBaseSpeed());
+        assertEquals(10, testCard.getHealth());
+        assertEquals(2, testCard.getBaseAttack());
+        assertEquals(4, testCard.getBaseDefense()); 
+        assertEquals(6, testCard.getBaseSpeed());
     }
 
     @Test
     void testTakeDamageAndIsDead() {
         testCard.takeDamage(20);
-        assertEquals(30, testCard.getHealth());
+        assertEquals(30, testCard.getHealthPoints());
         assertFalse(testCard.isDead());
 
         testCard.takeDamage(1000);
-        assertEquals(0, testCard.getHealth());
+        assertEquals(0, testCard.getHealthPoints());
         assertTrue(testCard.isDead());
     }
 
     @Test
     void testHealDamage() {
         testCard.takeDamage(30);
-        assertEquals(20, testCard.getHealth());
+        assertEquals(20, testCard.getHealthPoints());
         testCard.healDamage(5);
-        assertEquals(25, testCard.getHealth());
+        assertEquals(25, testCard.getHealthPoints());
         testCard.healDamage(100);
-        assertEquals(testCard.getMaxHealth(), testCard.getHealth());
+        assertEquals(testCard.getMaxHealthPoints(), testCard.getHealthPoints());
     }
 
     @Test
     void testDoTurnAttackAndHeal() {
-        Card c1 = CardFactory.createCard("A", "fire slime");
-        Card c2 = CardFactory.createCard("B", "plant slime");
+        Card c1 = CardFactory.createCard("A", "fire_slime");
+        Card c2 = CardFactory.createCard("B", "plant_slime");
 
         c1.doTurn(0, c2);
-        assertEquals(90, c2.getHealth());
+        assertEquals(90, c2.getHealthPoints());
 
         c2.doTurn(1, c1);
-        assertEquals(100, c2.getHealth());
+        assertEquals(100, c2.getHealthPoints());
     }
 
     @Test
@@ -114,10 +118,10 @@ class CardTest {
 
     @Test
     void testCardFactory_createsKnownTypes() {
-        Card c1 = CardFactory.createCard("A", "fire slime");
-        Card c2 = CardFactory.createCard("B", "water slime");
-        Card c3 = CardFactory.createCard("C", "electric slime");
-        Card c4 = CardFactory.createCard("D", "plant slime");
+        Card c1 = CardFactory.createCard("A", "fire_slime");
+        Card c2 = CardFactory.createCard("B", "water_slime");
+        Card c3 = CardFactory.createCard("C", "electric_slime");
+        Card c4 = CardFactory.createCard("D", "plant_slime");
 
         assertNotNull(c1);
         assertNotNull(c2);

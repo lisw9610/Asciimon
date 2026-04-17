@@ -127,7 +127,7 @@ public abstract class Card {
         return this.maximumMoveCount;
     }
 
-    private boolean canLevelUp() {
+    public boolean canLevelUp() {
         if(this.experience >= this.getExperienceForNextLevel() && this.level < this.maxLevel) {
             return true;
         }
