@@ -26,7 +26,6 @@ public abstract class Card {
     private Integer currentMoveCount = 0;
     private List<Move> moves = new ArrayList<>();
 
-
     private final Integer CARD_WIDTH = 35;
     private final String asciiArt;
 
@@ -65,7 +64,7 @@ public abstract class Card {
     }
 
     private void updateExperienceForNextLevel() {
-        this.requiredExperience = this.level * this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier;
+        this.requiredExperience = this.level * this.requiredExperienceIncreaseOnLevelUp * this.requiredExperienceIncreaseModifier; //experience for next level calculated by level*base EXP*EXP modifier
     }
 
     public void gainExperience(Integer gainedExp) {
@@ -125,16 +124,17 @@ public abstract class Card {
     }
 
     private void doLevelUp() {
-        if(canLevelUp()) {
+        while(canLevelUp()) {
             this.experience = this.experience - this.getExperienceForNextLevel();
-            
+            this.level += 1;
+
             this.updateExperienceForNextLevel();
 
-            this.level += 1;
             this.baseStats.set(0, getHealth() + this.statIncreaseOnLevelUp.get(0));
             this.baseStats.set(1, getBaseAttack() + this.statIncreaseOnLevelUp.get(1));
             this.baseStats.set(2, getBaseDefense() + this.statIncreaseOnLevelUp.get(2));
             this.baseStats.set(3, getBaseSpeed() + this.statIncreaseOnLevelUp.get(3));
+            this.healthPoints = this.getMaxHealthPoints();
 
         }
     }
@@ -215,6 +215,11 @@ public abstract class Card {
         }
     }
 
+    private void turnPasses() {
+        //applies status effects active on card
+        //decrements status effects by 1 turn
+    }
+
     public void doTurn(Integer moveIndex, Card enemyCard) {
         Move playedMove = moves.get(moveIndex);
         String impactedStat = playedMove.getImpactedStat();
@@ -226,6 +231,8 @@ public abstract class Card {
         } else {
             handleMoveTargetingSelf(impactedStat, statImpact);
         }
+
+        turnPasses();
     }
 
     public boolean isDead() {

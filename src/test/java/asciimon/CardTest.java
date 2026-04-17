@@ -138,13 +138,12 @@ class CardTest {
         assertTrue(card.contains("Speed     : 3"));
         assertTrue(card.contains("fireball"));
 
-        testCard.gainExperience(150);
+        testCard.gainExperience(112);
         testCard.learnMove(MoveInstances.getMoveInstance("discharge"));
         testCard.forgetMove(MoveInstances.getMoveInstance("fireball"));
-        testCard.reset();
 
         card = testCard.renderCard();
-        assertTrue(card.contains("Tester - lv.2(50/100"));
+        assertTrue(card.contains("Tester - lv.2(12/200"));
         assertTrue(card.contains("Type: ELECTRIC"));
         assertTrue(card.contains("HP: 100 / 100"));
         assertTrue(card.contains("Health    : 10"));
