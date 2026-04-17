@@ -27,8 +27,7 @@ public abstract class Card {
     private List<Move> moves = new ArrayList<>();
 
 
-    private final Integer ART_WIDTH = 25;
-    private final Integer INFO_WIDTH = 35;
+    private final Integer CARD_WIDTH = 35;
     private final String asciiArt;
 
     public Card(String name, String asciiArt, List<Integer> baseStats, Integer experienceModifier, List<Integer> statIncreaseOnLevelUp, Type type) {
@@ -248,35 +247,59 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return this.name + " - lv." + this.level + "(" + this.experience + "/" + this.getExperienceForNextLevel() + ")\n";
+        return this.name + " - lv." + this.level + "(" + this.experience + "/" + this.getExperienceForNextLevel() + ")";
     }
 
+    private List<String> renderHeader() {
+        List<String> header = new ArrayList<>();
+
+        //builds header (name, level, HP)
+        header.add(String.format("%-" + CARD_WIDTH + "s", this.toString()));
+        header.add(String.format("%-" + CARD_WIDTH + "s", "Type: " + (this.getType() == null ? "—" : this.getType())));
+        header.add(String.format("%-" + CARD_WIDTH + "s", ""));
+        header.add(String.format("%-" + CARD_WIDTH + "s", "HP: " + this.getHealthPoints() + " / " + this.getMaxHealthPoints()));
+        header.add(String.format("%-" + CARD_WIDTH + "s", ""));
+
+        return header;
+    }
+
+
     private List<String> renderAsciiArt() {
-        //splits ascii art into lines and truncate to ART_WIDTH
+        //splits ascii art into lines
         String[] artLines = asciiArt.split("\n");
         List<String> art = new ArrayList<>();
+        
+        //finds the longest line to determine centering
+        int maxLength = 0;
         for (String line : artLines) {
-            if (line.length() > ART_WIDTH) {
-                art.add(line.substring(0, ART_WIDTH));
-            } else {
-                art.add(String.format("%-" + ART_WIDTH + "s", line));
+            line = line.replaceAll("\\r", "");
+            if (line.length() > maxLength) {
+                maxLength = line.length();
             }
         }
-
+        
+        for (String line : artLines) {
+            line = line.replaceAll("\\r", "");
+            
+            if (line.length() > CARD_WIDTH) {
+                art.add(line.substring(0, CARD_WIDTH));
+            } else {
+                //calulates padding based on the longest line
+                int totalPadding = CARD_WIDTH - maxLength;
+                int leftPadding = totalPadding / 2;
+                
+                String centeredLine = " ".repeat(leftPadding) + line + " ".repeat(CARD_WIDTH - leftPadding - line.length());
+                art.add(centeredLine);
+            }
+        }
+        
         return art;
     }
 
-    private List<String> renderInfoColumns() {
+    private List<String> renderInfo() {
         List<String> info = new ArrayList<>();
-
-        //builds info column lines (name, level, HP, stats, moves)
-        info.add(String.format("%-" + INFO_WIDTH + "s", this.toString()));
-        info.add(String.format("%-" + INFO_WIDTH + "s", "Type: " + (this.getType() == null ? "—" : this.getType())));
-        info.add(String.format("%-" + INFO_WIDTH + "s", "HP: " + this.getHealthPoints() + " / " + this.getMaxHealthPoints()));
-        info.add(String.format("%-" + INFO_WIDTH + "s", ""));
-
-
         
+        //adds stats
         for (Integer i = 0; i < this.statNames.size(); i++) {
             Integer base = this.baseStats.get(i);
             Integer mod = this.statModifiers.get(i);
@@ -297,7 +320,7 @@ public abstract class Card {
             } else {
                 strMove = (i + 1) + ". ---";
             }
-            info.add(String.format("%-" + INFO_WIDTH + "s", strMove));
+            info.add(String.format("%-" + CARD_WIDTH + "s", strMove));
         }
 
 
@@ -305,37 +328,45 @@ public abstract class Card {
     }
 
     public String renderCard() {
-        String spacer = "  "; // space between columns
-
+        List<String> header = this.renderHeader();
         List<String> art = this.renderAsciiArt();
+        List<String> info = this.renderInfo();
 
-        List<String> info = this.renderInfoColumns();
-
-        //makes both columns the same number of lines
-        int maxLines = Math.max(art.size(), info.size());
-        while (art.size() < maxLines) {
-            art.add(String.format("%-" + ART_WIDTH + "s", ""));
-        }
-
-        while (info.size() < maxLines) {
-            info.add(String.format("%-" + INFO_WIDTH + "s", ""));
-        }
-
-        //final lines
-        StringBuilder out = new StringBuilder();
-        String border = "+" + "-".repeat(ART_WIDTH + INFO_WIDTH + spacer.length()) + "+\n";
-        out.append(border);
+        int totalWidth = CARD_WIDTH + 2;
         
-        for (int i = 0; i < maxLines; i++) {
+        StringBuilder out = new StringBuilder();
+        String border = "+" + "-".repeat(totalWidth) + "+\n";
+        
+        out.append(border);
+
+        //header section
+        for (String line : header) {
             out.append("|");
-            out.append(art.get(i));
-            out.append(spacer);
-            out.append(info.get(i));
+            out.append(String.format("%-" + totalWidth + "s", line));
             out.append("|\n");
         }
 
         out.append(border);
-
+        
+        //ASCII art section
+        for (String line : art) {
+            out.append("|");
+            out.append(line);
+            out.append(String.format("%" + (totalWidth - line.length()) + "s", ""));
+            out.append("|\n");
+        }
+        
+        out.append(border);
+        
+        //add info section (stats and moves)
+        for (String line : info) {
+            out.append("|");
+            out.append(String.format("%-" + totalWidth + "s", line));
+            out.append("|\n");
+        }
+        
+        out.append(border);
+        
         return out.toString();
     }
 
