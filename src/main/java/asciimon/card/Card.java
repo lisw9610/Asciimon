@@ -16,15 +16,19 @@ public abstract class Card {
     private final Integer requiredExperienceIncreaseModifier; //A unique value that provides a modifier to the required experience based on the card
     private final Integer requiredExperienceIncreaseOnLevelUp = 100; //Default value the total required experience increases by for each level up for all cards.
     private final List<Integer> statIncreaseOnLevelUp; //Stores the amount each base card stat increases in the order (health, attack, defense, speed)
+    private final List<String> statNames = Arrays.asList("Health", "Attack", "Defense", "Speed");
     private List<Integer> baseStats; //Stores the cards stats in the order (health, attack, defense, speed)
     private List<Integer> statModifiers = Arrays.asList(0, 0, 0, 0); //Stores the modifiers applied by buff and debuff moves to each stat in the order (health, attack, defense, speed)
     private Integer health;
-    private Type type;
+    private final Type type;
 
     private final Integer maximumMoveCount = 4;
     private Integer currentMoveCount = 0;
     private List<Move> moves = new ArrayList<>();
 
+
+    private final Integer ART_WIDTH = 25;
+    private final Integer INFO_WIDTH = 35;
     private final String asciiArt;
 
     public Card(String name, String asciiArt, List<Integer> baseStats, Integer experienceModifier, List<Integer> statIncreaseOnLevelUp, Type type) {
@@ -236,6 +240,94 @@ public abstract class Card {
     @Override
     public String toString() {
         return this.name + " - lv." + this.level + "(" + this.experience + "/" + this.getExperienceForNextLevel() + ")\n";
+    }
+
+    private List<String> renderAsciiArt() {
+        //splits ascii art into lines and truncate to ART_WIDTH
+        String[] artLines = asciiArt.split("\n");
+        List<String> art = new ArrayList<>();
+        for (String line : artLines) {
+            if (line.length() > ART_WIDTH) {
+                art.add(line.substring(0, ART_WIDTH));
+            } else {
+                art.add(String.format("%-" + ART_WIDTH + "s", line));
+            }
+        }
+
+        return art;
+    }
+
+    private List<String> renderInfoColumns() {
+        List<String> info = new ArrayList<>();
+
+        //builds info column lines (name, level, HP, stats, moves)
+        info.add(String.format("%-" + INFO_WIDTH + "s", this.toString()));
+        info.add(String.format("%-" + INFO_WIDTH + "s", "Type: " + (this.getType() == null ? "—" : this.getType())));
+        info.add(String.format("%-" + INFO_WIDTH + "s", "HP: " + this.getHealth() + " / " + this.getMaxHealth()));
+        info.add(String.format("%-" + INFO_WIDTH + "s", ""));
+
+
+        
+        for (Integer i = 0; i < this.statNames.size(); i++) {
+            Integer base = this.baseStats.get(i);
+            Integer mod = this.statModifiers.get(i);
+            String modStr = (mod == 0) ? "" : (mod > 0 ? " (+" + mod + ")" : " (-" + mod + ")");
+            info.add(String.format("%-10s: %-6s%s", this.statNames.get(i), base, modStr));
+        }
+
+
+        //adds moves (up to maximumMoveCount)
+        info.add("");
+        info.add("Moves:");
+
+        for (int i = 0; i < maximumMoveCount; i++) {
+            String strMove;
+            if (i < moves.size()) {
+                Move move = moves.get(i);
+                strMove = (i + 1) + ". " + move.getMoveName();
+            } else {
+                strMove = (i + 1) + ". ---";
+            }
+            info.add(String.format("%-" + INFO_WIDTH + "s", strMove));
+        }
+
+
+        return info;
+    }
+
+    public String renderCard() {
+        String spacer = "  "; // space between columns
+
+        List<String> art = this.renderAsciiArt();
+
+        List<String> info = this.renderInfoColumns();
+
+        //makes both columns the same number of lines
+        int maxLines = Math.max(art.size(), info.size());
+        while (art.size() < maxLines) {
+            art.add(String.format("%-" + ART_WIDTH + "s", ""));
+        }
+
+        while (info.size() < maxLines) {
+            info.add(String.format("%-" + INFO_WIDTH + "s", ""));
+        }
+
+        //final lines
+        StringBuilder out = new StringBuilder();
+        String border = "+" + "-".repeat(ART_WIDTH + INFO_WIDTH + spacer.length()) + "+\n";
+        out.append(border);
+        
+        for (int i = 0; i < maxLines; i++) {
+            out.append("|");
+            out.append(art.get(i));
+            out.append(spacer);
+            out.append(info.get(i));
+            out.append("|\n");
+        }
+
+        out.append(border);
+
+        return out.toString();
     }
 
 }
