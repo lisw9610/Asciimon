@@ -2,3 +2,7 @@
 .gradle/
 build/
 EOF
+
+#vscode
+.vscode/
+bin/

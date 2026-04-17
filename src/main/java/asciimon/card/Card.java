@@ -9,8 +9,9 @@ import asciimon.type.Type;
 public abstract class Card {
     private String name;
     private Integer level;
+    private final Integer maxLevel = 50;
     private Integer experience;
-    private List<Integer> nextLevelExperienceCounts; //List of experience needed to level up for each level. Index 0 for level 2, index 1 for level 3, and so on.
+    private final List<Integer> nextLevelExperienceCounts; //List of experience needed to level up for each level. Index 0 for level 2, index 1 for level 3, and so on.
     private final List<Integer> statIncreaseOnLevelUp; //Stores the amount each base card stat increases in the order (health, attack, defense, speed)
     private Integer health;
     private Integer maxHealth;
@@ -26,10 +27,11 @@ public abstract class Card {
     private Integer currentMoveCount = 0;
     private List<Move> moves = new ArrayList<>();
 
+    private final String asciiArt;
 
-
-    public Card(String name, Integer health, Integer attack, Integer defense, Integer speed, List<Integer> nextLevelExperienceCounts, List<Integer> statIncreaseOnLevelUp, Type type) {
+    public Card(String name, String asciiArt, Integer health, Integer attack, Integer defense, Integer speed, List<Integer> nextLevelExperienceCounts, List<Integer> statIncreaseOnLevelUp, Type type) {
         this.name = name;
+        this.asciiArt = asciiArt;
         this.level = 1;
         this.experience = 0;
         this.nextLevelExperienceCounts = nextLevelExperienceCounts;
@@ -44,6 +46,16 @@ public abstract class Card {
 
     public String getName() {
         return this.name;
+    }
+
+    public String getAsciiArt() {
+        return this.asciiArt;
+    }
+
+    public String getCardGraphic() {
+        String cardGraphic = "";
+
+        return cardGraphic;
     }
 
     public Integer getLevel() {
@@ -88,7 +100,7 @@ public abstract class Card {
         return this.baseAttack;
     }
 
-    public Integer getModifiedAttack(Integer modifier) {
+    public Integer getModifiedAttack() {
         return this.baseAttack + this.attackModifier;
     }
 
@@ -96,7 +108,7 @@ public abstract class Card {
         return this.baseDefense;
     }
 
-    public Integer getModifiedDefense(Integer modifier) {
+    public Integer getModifiedDefense() {
         return this.baseDefense + this.defenseModifier;
     }
 
@@ -104,7 +116,7 @@ public abstract class Card {
         return this.baseSpeed;
     }
 
-    public Integer getModifiedSpeed(Integer modifier) {
+    public Integer getModifiedSpeed() {
         return this.baseSpeed + this.speedModifier;
     }
 
