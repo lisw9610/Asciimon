@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<div class="page">
+    <div class="panel">
+        <h1>Battle Arena</h1>
+        <p>This is a placeholder battle screen so your pages run end-to-end.</p>
+
+        <div class="battle-layout">
+            <div class="battle-card">
+                <h2>Your Card</h2>
+                <p class="big-text" th:text="${selectedCard}">Fire Slime</p>
+                <p>HP: 100</p>
+                <p>Level: 1</p>
+            </div>
+
+            <div class="battle-card enemy">
+                <h2>Enemy Card</h2>
+                <p class="big-text" th:text="${enemyCard}">Wild Slime</p>
+                <p>HP: 100</p>
+                <p>Level: 1</p>
+            </div>
+        </div>
+
+        <div class="moves">
+            <h2>Moves</h2>
+            <div class="move-buttons">
+                <a class="button primary" th:each="moveName : ${moves}" th:text="${moveName}" th:href="@{/result(winner='You')}">Basic Attack</a>
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <a class="button secondary" th:href="@{/select}">Back to Select</a>
+            <a class="button secondary" th:href="@{/result(winner='You')}">Skip to Result</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
