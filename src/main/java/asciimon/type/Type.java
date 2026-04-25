@@ -3,22 +3,17 @@ package asciimon.type;
 import java.util.List;
 
 public abstract class Type { 
-    protected List<String> advantageAgainst;
-    protected List<String> disadvantageAgainst;
+    protected List<Type> advantageAgainst;
+    protected List<Type> disadvantageAgainst;
     private Double advantageModifier;
     private Double disadvantageModifier;
 
-    protected static Type INSTANCE = null;
 
-    protected Type(List<String> advantageAgainst, List<String> disadvantageAgainst) {
+    protected Type(List<Type> advantageAgainst, List<Type> disadvantageAgainst) {
         this.advantageAgainst = advantageAgainst;
         this.disadvantageAgainst = disadvantageAgainst;
         this.advantageModifier = 2.0;
         this.disadvantageModifier = 0.5;
-    }
-
-    public static Type getInstance() {
-        return INSTANCE;
     }
 
     public Double getAdvantageModifier() {
@@ -30,21 +25,21 @@ public abstract class Type {
     }
 
     public boolean hasAdvantageAgainst(Type type) {
-        for(String advantageType : advantageAgainst) {
-            if(advantageType.equals(type.toString())) {
-                return true;
-            }
-        }
-        return false;
+        return advantageAgainst.contains(type);
     }
 
     public boolean hasDisadvantageAgainst(Type type) {
-        for(String disadvantageAgainst : disadvantageAgainst) {
-            if(disadvantageAgainst.equals(type.toString())) {
-                return true;
-            }
+        return disadvantageAgainst.contains(type);
+    }
+
+    public double getEffectiveness(Type enemyType) {
+        if (hasAdvantageAgainst(enemyType)) {
+            return advantageModifier;
         }
-        return false;
+        if (hasDisadvantageAgainst(enemyType)) {
+            return disadvantageModifier;
+        }
+        return 1.0;
     }
 
     public abstract String toString();

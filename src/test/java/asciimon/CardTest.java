@@ -12,7 +12,7 @@ import asciimon.type.Type;
 import asciimon.type.TypeInstances;
 import asciimon.card.Card;
 import asciimon.card.CardFactory;
-import asciimon.move.MoveInstances;
+import asciimon.move.MoveFactory;
 
 class CardTest {
 
@@ -126,7 +126,7 @@ class CardTest {
 
     @Test
     void testRenderCard() {
-        testCard.learnMove(MoveInstances.getMoveInstance("fireball"));
+        testCard.learnMove(MoveFactory.getMoveInstance("fireball"));
 
         String card = testCard.renderCard();
         assertTrue(card.contains("Tester - lv.1(0/100"));
@@ -139,8 +139,8 @@ class CardTest {
         assertTrue(card.contains("fireball"));
 
         testCard.gainExperience(112);
-        testCard.learnMove(MoveInstances.getMoveInstance("discharge"));
-        testCard.forgetMove(MoveInstances.getMoveInstance("fireball"));
+        testCard.learnMove(MoveFactory.getMoveInstance("discharge"));
+        testCard.forgetMove(MoveFactory.getMoveInstance("fireball"));
 
         card = testCard.renderCard();
         assertTrue(card.contains("Tester - lv.2(12/200"));

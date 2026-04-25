@@ -1,22 +1,21 @@
 package asciimon.type;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class PlantType extends Type{
+public class PlantType extends Type {
 
+    private static final PlantType INSTANCE = new PlantType();
 
-    public PlantType() {
-        List<String> advantageAgainst = Arrays.asList("ELECTRIC");
-        List<String> disadvantageAgainst = Arrays.asList("FIRE");
-
-        super(advantageAgainst, disadvantageAgainst);
+    private PlantType() {
+        super(List.of(), List.of(FireType.getInstance()));
     }
 
+    public static PlantType getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
     public String toString() {
-        return "PLANT";
+        return "Fire";
     }
-
-
-
 }

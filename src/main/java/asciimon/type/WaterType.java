@@ -1,20 +1,21 @@
 package asciimon.type;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class WaterType extends Type{
+public class WaterType extends Type {
 
+    private static final WaterType INSTANCE = new WaterType();
 
-    public WaterType() {
-        List<String> advantageAgainst = Arrays.asList("FIRE");
-        List<String> disadvantageAgainst = Arrays.asList("ELECTRIC");
-
-        super(advantageAgainst, disadvantageAgainst);
+    private WaterType() {
+        super(List.of(FireType.getInstance()), List.of(ElectricType.getInstance()));
     }
 
+    public static WaterType getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
     public String toString() {
-        return "WATER";
+        return "Fire";
     }
-
 }

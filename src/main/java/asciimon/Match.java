@@ -1,50 +1,101 @@
 package asciimon;
 
 import asciimon.card.Card;
+import asciimon.card.StatType;
 
 public class Match {
-    private Deck player1Deck;
-    private Deck player2Deck;
-    private Integer turnNumber;
+    private final Player player1;
+    private final Player player2;
+    private boolean isBattleOver = false;
+    private Integer turnCount;
 
-    public Match(Deck p1Deck, Deck p2Deck) {
-        this.player1Deck = p1Deck;
-        this.player2Deck = p2Deck;
-        this.turnNumber = 0;
+    public Match(Player p1, Player p2) {
+        this.player1 = p1;
+        this.player2 = p2;
     }
 
-    public Deck getP1Deck() {
-        return this.player1Deck;
+
+    //======================================== SETUP ========================================
+
+    public void startBattle() {
+        player1.getDeck().pickCard(0);
+        player2.getDeck().pickCard(0);
     }
 
-    public Deck getP2Deck() {
-        return this.player2Deck;
+    //======================================== TURN ========================================
+
+    public void playTurn(int p1MoveIndex, int p2MoveIndex) {
+        if (isBattleOver) return;
+
+        TurnAction action1 = new TurnAction(player1, p1MoveIndex);
+        TurnAction action2 = new TurnAction(player2, p2MoveIndex);
+
+        executeTurn(action1, action2);
+
+        checkBattleEnd();
     }
 
-    public Integer getTurnNumber() {
-        return this.turnNumber;
+    //======================================== EXECUTE TURN ========================================
+
+    private void executeTurn(TurnAction a1, TurnAction a2) {
+        Card c1 = a1.getPlayer().getActiveCard();
+        Card c2 = a2.getPlayer().getActiveCard();
+
+        //deciding order by speed
+        boolean p1GoesFirst = c1.getModifiedStat(StatType.SPEED) >= c2.getModifiedStat(StatType.SPEED);
+
+        if (p1GoesFirst) {
+            executeAction(a1, c1, c2);
+            if (!c2.isDead()) {
+                executeAction(a2, c2, c1);
+            }
+        } else {
+            executeAction(a2, c2, c1);
+            if (!c1.isDead()) {
+                executeAction(a1, c1, c2);
+            }
+        }
     }
 
-    private void playersDrawCards(Integer p1CardIndex, Integer p2CardIndex) {
-        this.player1Deck.pickCard(0);
-        this.player2Deck.pickCard(0);
+    private void executeAction(TurnAction action, Card user, Card target) {
+        user.doTurn(action.getMoveIndex(), target);
+
+        if (target.isDead()) {
+            handleFaint(action.getPlayer() == player1 ? player2 : player1);
+        }
     }
 
-    private void doFight(Integer p1MoveIndex, Integer p2MoveIndex) {
-        Card p1Card = this.player1Deck.getCardInPlay();
-        Card p2Card = this.player2Deck.getCardInPlay();
+    //======================================== FAINTING ========================================
 
-        p1Card.doTurn(p1MoveIndex, p2Card);
-        p2Card.doTurn(p2MoveIndex, p1Card);
+    private void handleFaint(Player player) {
+        Deck deck = player.getDeck();
 
+        deck.discardCardInPlay();
+
+        if (!deck.getDeck().isEmpty()) {
+            deck.pickCard(0); // auto-pick next (can later let player choose)
+        }
     }
 
-    public void playTurn() {
-        playersDrawCards(0, 0);
+    //======================================== END ========================================
 
-        doFight(0, 0);
-
-        turnNumber += 1;
+    private void checkBattleEnd() {
+        if (player1.hasLost() || player2.hasLost()) {
+            isBattleOver = true;
+        }
     }
 
+    public Player getWinner() {
+        if (!isBattleOver) return null;
+
+        if (player1.hasLost()) return player2;
+        if (player2.hasLost()) return player1;
+
+        return null;
+    }
+
+    public boolean isBattleOver() {
+        return isBattleOver;
+    }
 }
+

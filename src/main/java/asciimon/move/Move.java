@@ -1,17 +1,19 @@
 package asciimon.move;
 
+import asciimon.card.Card;
+import asciimon.card.StatType;
 import asciimon.type.Type;
 
 public abstract class Move {
     private String moveName;
     private Type moveType;
-    private String impactedStat;
+    private StatType impactedStat;
     private Integer statImpact;
     private Integer impactDuration;
     private boolean targetsEnemy; //true if it targets an enemy(attack and debuff) and false if it targets self(support)
 
 
-    public Move(String moveName, Type moveType, String impactedStat, Integer statImpact, Integer impactDuration, boolean targetsEnemy) {
+    public Move(String moveName, Type moveType, StatType impactedStat, Integer statImpact, Integer impactDuration, boolean targetsEnemy) {
         this.moveName = moveName;
         this.moveType = moveType;
         this.impactedStat = impactedStat;
@@ -28,7 +30,7 @@ public abstract class Move {
         return this.moveType;
     }
 
-    public String getImpactedStat() {
+    public StatType getImpactedStat() {
         return this.impactedStat;
     }
 
@@ -43,5 +45,11 @@ public abstract class Move {
     public boolean targetsEnemy() {
         return this.targetsEnemy;
     }
+
+    public void applyEffect(Card target) {}
+
+    public void onExpire(Card target) {}
+
+    public abstract void executeMove(Card user, Card target);
 
 }

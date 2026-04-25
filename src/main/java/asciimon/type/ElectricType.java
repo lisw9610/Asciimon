@@ -1,19 +1,21 @@
 package asciimon.type;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class ElectricType extends Type{
+public class ElectricType extends Type {
 
-    public ElectricType() {
-        List<String> advantageAgainst = Arrays.asList("WATER");
-        List<String> disadvantageAgainst = Arrays.asList("PLANT");
+    private static final ElectricType INSTANCE = new ElectricType();
 
-        super(advantageAgainst, disadvantageAgainst);
+    private ElectricType() {
+        super(List.of(WaterType.getInstance()), List.of());
     }
 
+    public static ElectricType getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
     public String toString() {
-        return "ELECTRIC";
+        return "Fire";
     }
-
 }

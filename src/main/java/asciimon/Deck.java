@@ -1,46 +1,87 @@
 package asciimon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import asciimon.card.Card;
 
 public class Deck {
-    private Integer maxDeckSize;
-    private List<Card> deck = new ArrayList<>();
-    private List<Card> discarded = new ArrayList<>();
+    private final Integer maxDeckSize;
+    private final List<Card> deck;
+    private final List<Card> discarded = new ArrayList<>();
     private Card inPlay = null;
 
     private Deck(DeckBuilder builder) {
         this.maxDeckSize = builder.maxDeckSize;
-        this.deck = builder.deck;
+        this.deck = new ArrayList<>(builder.deck);
     }
 
     public Card pickCard(Integer cardIndex) {
-        if(cardIndex >= 0 && cardIndex < maxDeckSize) {
+        if (cardIndex >= 0 && cardIndex < deck.size()) {
             this.inPlay = deck.get(cardIndex);
         } else {
-            this.inPlay = null;
+            throw new IllegalArgumentException("Invalid card index.");
         }
 
-        return getCardInPlay();
+        return inPlay;
     }
 
+    public void discardCardInPlay() {
+        if (inPlay == null) return;
+
+        deck.remove(inPlay);
+        discarded.add(inPlay);
+        inPlay = null;
+    }
+
+    public void handleFaint() {
+        if (inPlay != null && inPlay.isDead()) {
+            discardCardInPlay();
+
+            if (!deck.isEmpty()) {
+                inPlay = deck.get(0);
+            }
+        }
+    }
+
+    public void shuffleDeck() {
+        Collections.shuffle(deck);
+    }
+
+    public boolean hasNoCardsLeft() {
+        return deck.isEmpty() && inPlay == null;
+    }
 
     public Card getCardInPlay() {
         return this.inPlay;
     }
 
-    public void discardCardInPlay() {
-        deck.remove(this.inPlay);
-        discarded.add(this.inPlay);
-        this.inPlay = null;
+    public Integer getDeckSize() {
+        return deck.size();
     }
+
+    public List<Card> getDeck() {
+        return new ArrayList<>(deck);
+    }
+
+    public List<Card> getDiscarded() {
+        return new ArrayList<>(discarded);
+    }
+
+
+
+
+
+
 
     @Override
     public String toString() {
         return "";
     }
+
+
+
 
     public static class DeckBuilder {
         private Integer maxDeckSize = 0;
@@ -58,17 +99,16 @@ public class Deck {
         }
 
         public DeckBuilder addCard(Card card) {
-            if (deck.size() < this.maxDeckSize) {
-                deck.add(card);
+            if (deck.size() >= maxDeckSize) {
+                throw new IllegalStateException("Deck is full.");
             }
-            
+            deck.add(card);
             return this;
         }
 
         public Deck createDeck() {
             return new Deck(this);
         }
-
     }
 
 }

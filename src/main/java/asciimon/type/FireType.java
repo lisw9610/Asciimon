@@ -1,19 +1,21 @@
 package asciimon.type;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class FireType extends Type{
+public class FireType extends Type {
 
-    public FireType() {
-        List<String> advantageAgainst = Arrays.asList("PLANT");
-        List<String> disadvantageAgainst = Arrays.asList("WATER");
+    private static final FireType INSTANCE = new FireType();
 
-        super(advantageAgainst, disadvantageAgainst);
+    private FireType() {
+        super(List.of(PlantType.getInstance()), List.of(WaterType.getInstance()));
     }
 
+    public static FireType getInstance() {
+        return INSTANCE;
+    }
+
+    @Override
     public String toString() {
-        return "FIRE";
+        return "Fire";
     }
-
 }
