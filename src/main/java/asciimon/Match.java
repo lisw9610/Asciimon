@@ -1,13 +1,21 @@
 package asciimon;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import asciimon.card.Card;
 import asciimon.card.StatType;
+import asciimon.move.Move;
 
 public class Match {
     private final Player player1;
     private final Player player2;
     private boolean isBattleOver = false;
+    private final Random random = new Random();
     private Integer turnCount;
+    private final List<String> battleLog = new ArrayList<>();
+
 
     public Match(Player p1, Player p2) {
         this.player1 = p1;
@@ -22,29 +30,64 @@ public class Match {
         player2.getDeck().pickCard(0);
     }
 
+    //======================================== LOGGING ========================================
+    public List<String> getBattleLog() {
+        return new ArrayList<>(battleLog);
+    }
+
+    private void log(String message) {
+        battleLog.add(message);
+    }
+
+
     //======================================== TURN ========================================
 
-    public void playTurn(int p1MoveIndex, int p2MoveIndex) {
+    public void playTurn(TurnAction action1, TurnAction action2) {
         if (isBattleOver) return;
-
-        TurnAction action1 = new TurnAction(player1, p1MoveIndex);
-        TurnAction action2 = new TurnAction(player2, p2MoveIndex);
 
         executeTurn(action1, action2);
 
         checkBattleEnd();
     }
 
-    //======================================== EXECUTE TURN ========================================
-
     private void executeTurn(TurnAction a1, TurnAction a2) {
         Card c1 = a1.getPlayer().getActiveCard();
         Card c2 = a2.getPlayer().getActiveCard();
 
-        //deciding order by speed
-        boolean p1GoesFirst = c1.getModifiedStat(StatType.SPEED) >= c2.getModifiedStat(StatType.SPEED);
+        // Switching ALWAYS goes first
+        if (a1.isSwitching() && !a2.isSwitching()) {
+            executeSwitch(a1);
+            executeAction(a2, c2, c1);
+            return;
+        }
 
-        if (p1GoesFirst) {
+        if (a2.isSwitching() && !a1.isSwitching()) {
+            executeSwitch(a2);
+            executeAction(a1, c1, c2);
+            return;
+        }
+
+        // If both switch
+        if (a1.isSwitching() && a2.isSwitching()) {
+            executeSwitch(a1);
+            executeSwitch(a2);
+            return;
+        }
+
+        int speed1 = c1.getModifiedStat(StatType.SPEED);
+        int speed2 = c2.getModifiedStat(StatType.SPEED);
+
+        boolean p1First;
+
+        if (speed1 > speed2) {
+            p1First = true;
+        } else if (speed2 > speed1) {
+            p1First = false;
+        } else {
+            p1First = random.nextBoolean();
+        }
+
+        if (p1First) {
             executeAction(a1, c1, c2);
             if (!c2.isDead()) {
                 executeAction(a2, c2, c1);
@@ -58,11 +101,35 @@ public class Match {
     }
 
     private void executeAction(TurnAction action, Card user, Card target) {
+        Move move = user.getMoves().get(action.getMoveIndex());
+
+        log(user.getName() + " used " + move.getMoveName());
+
+        int beforeHP = target.getHealthPoints();
+
         user.doTurn(action.getMoveIndex(), target);
 
+        int afterHP = target.getHealthPoints();
+        int damage = beforeHP - afterHP;
+
+        if (damage > 0) {
+            log(target.getName() + " took " + damage + " damage");
+        }
+
         if (target.isDead()) {
+            log(target.getName() + " fainted!");
             handleFaint(action.getPlayer() == player1 ? player2 : player1);
         }
+    }
+
+    private void executeSwitch(TurnAction action) {
+        Player player = action.getPlayer();
+        Deck deck = player.getDeck();
+
+        Card oldCard = deck.getCardInPlay();
+        Card newCard = deck.pickCard(action.getSwitchIndex());
+
+        log(player.getName() + " switched from " + (oldCard != null ? oldCard.getName() : "None") + " to " + newCard.getName());
     }
 
     //======================================== FAINTING ========================================
@@ -77,7 +144,7 @@ public class Match {
         }
     }
 
-    //======================================== END ========================================
+    //======================================== MATCH END ========================================
 
     private void checkBattleEnd() {
         if (player1.hasLost() || player2.hasLost()) {

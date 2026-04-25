@@ -2,18 +2,28 @@ package asciimon;
 
 public class TurnAction {
     private final Player player;
-    private final int moveIndex;
+    private final Integer moveIndex;   // null if switching
+    private final Integer switchIndex; // null if attacking
 
-    public TurnAction(Player player, int moveIndex) {
+    private TurnAction(Player player, Integer moveIndex, Integer switchIndex) {
         this.player = player;
         this.moveIndex = moveIndex;
+        this.switchIndex = switchIndex;
     }
 
-    public Player getPlayer() {
-        return player;
+    public static TurnAction attack(Player player, int moveIndex) {
+        return new TurnAction(player, moveIndex, null);
     }
 
-    public int getMoveIndex() {
-        return moveIndex;
+    public static TurnAction swap(Player player, int switchIndex) {
+        return new TurnAction(player, null, switchIndex);
     }
+
+    public boolean isSwitching() {
+        return switchIndex != null;
+    }
+
+    public Player getPlayer() { return player; }
+    public Integer getMoveIndex() { return moveIndex; }
+    public Integer getSwitchIndex() { return switchIndex; }
 }
