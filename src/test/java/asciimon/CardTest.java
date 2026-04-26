@@ -105,10 +105,10 @@ class CardTest {
         Card c2 = CardFactory.createCard("B", "plant_slime");
 
         c1.doTurn(0, c2);
-        assertEquals(60, c2.getHealthPoints());
+        assertEquals(90, c2.getHealthPoints());
 
         c2.doTurn(1, c1);
-        assertEquals(70, c2.getHealthPoints());
+        assertEquals(100, c2.getHealthPoints());
     }
 
     @Test

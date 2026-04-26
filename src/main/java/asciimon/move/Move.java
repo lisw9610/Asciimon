@@ -29,8 +29,8 @@ public abstract class Move {
         return this.moveType;
     }
 
-    public String getImpactedStat() {
-        return this.impactedStat.name().toLowerCase();
+    public StatType getImpactedStat() {
+        return this.impactedStat;
     }
 
     public StatType getImpactedStatEnum() {

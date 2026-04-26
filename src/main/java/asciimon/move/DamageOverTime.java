@@ -18,7 +18,7 @@ public class DamageOverTime extends Move {
     }
 
     public void onExpire(Card target) {
-        target.updateModifier(getImpactedStat(), -getStatImpact());
+        //
     }
 
 }

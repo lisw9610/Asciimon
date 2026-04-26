@@ -47,7 +47,5 @@ public abstract class Type {
         return null;
     }
 
-    public abstract boolean hasAdvantageAgainst(Type type);
-    public abstract boolean hasDisadvantageAgainst(Type type);
     public abstract String toString();
 }

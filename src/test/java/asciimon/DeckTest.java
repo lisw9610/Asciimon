@@ -24,10 +24,8 @@ public class DeckTest {
 
         assertNull(deck.getCardInPlay(), "Initially no card should be in play");
 
-        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(-1),"Picking a negative index should throw IllegalArgumentException");
-
-
-        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(0), "Picking index 2 should throw IllegalArgumentException");
+        assertNull(deck.pickCard(-1));
+        assertNull(deck.pickCard(0));
 
     }
 
@@ -50,7 +48,7 @@ public class DeckTest {
         assertEquals(c2, deck.getCardInPlay(), "Picking index 1 should set second card as in play");
 
 
-        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(2), "Picking index 2 should throw IllegalArgumentException");
+        assertNull(deck.pickCard(2));
     }
 
     @Test

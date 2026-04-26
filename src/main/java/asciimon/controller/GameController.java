@@ -143,8 +143,8 @@ public class GameController {
         int enemyMoveIndex = randomValidMoveIndex(enemyCard);
 
         match.playTurn(
-                TurnAction.attack(player, moveIndex),
-                TurnAction.attack(enemy, enemyMoveIndex)
+                TurnAction.move(player, moveIndex),
+                TurnAction.move(enemy, enemyMoveIndex)
         );
 
         if (match.isBattleOver()) {

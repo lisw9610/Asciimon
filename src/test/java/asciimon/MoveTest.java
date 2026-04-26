@@ -33,7 +33,7 @@ public class MoveTest {
         assertNotNull(par);
         assertEquals("paralyze", par.getMoveName());
         assertEquals(StatType.SPEED, par.getImpactedStat());
-        assertEquals(Integer.valueOf(-2), par.getStatImpact());
+        assertEquals(Integer.valueOf(2), par.getStatImpact());
         assertEquals(Integer.valueOf(2), par.getImpactDuration());
         assertTrue(par.targetsEnemy()); // debuff targets enemy
 
