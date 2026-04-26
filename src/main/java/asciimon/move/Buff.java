@@ -12,14 +12,14 @@ public class Buff extends Move {
         super(name, type, stat, amount, duration, false);
     }
 
-
     @Override
     public void executeMove(Card user, Card target) {
         BuffEffect effect = new BuffEffect(getImpactedStat(), getStatImpact());
         user.addStatusEffect(new StatusEffectTracker(getImpactDuration(), effect, user));
+
     }
 
     public void onExpire(Card target) {
-        target.updateModifier(getImpactedStat(), -getStatImpact());
+        target.updateModifier(getImpactedStatEnum(), -getStatImpact());
     }
 }

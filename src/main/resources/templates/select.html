@@ -1,27 +1,64 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Card</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="page">
-    <div class="panel">
-        <h1>Select Your Card</h1>
-        <p>Choose one card to begin the match.</p>
-
-        <div class="grid">
-            <div class="card-option" th:each="cardName : ${cards}">
-                <h2 th:text="${cardName}">Fire Slime</h2>
-                <p>Ready for battle.</p>
-                <a class="button primary" th:href="@{/battle(card=${cardName})}">Choose</a>
+    <section class="panel">
+        <div class="top-row">
+            <div>
+                <p class="eyebrow">Hi <strong>[[${playerName}]]</strong>! Choose Your Fighter</p>
+                <h1>Select a Card</h1>
             </div>
+            <a class="button secondary" href="/home">Home</a>
         </div>
 
-        <a class="button secondary" th:href="@{/}">Back Home</a>
-    </div>
+        <div class="grid">
+            <article class="card-option">
+                <div class="type-pill">Fire Slime</div>
+                <h2>Fire Slime</h2>
+                <p>Choose this slime to enter battle.</p>
+                <form method="post" action="/battle/start">
+                    <input type="hidden" name="cardType" value="fire_slime">
+                    <button class="button primary full-width" type="submit">Choose</button>
+                </form>
+            </article>
+
+            <article class="card-option">
+                <div class="type-pill">Water Slime</div>
+                <h2>Water Slime</h2>
+                <p>Choose this slime to enter battle.</p>
+                <form method="post" action="/battle/start">
+                    <input type="hidden" name="cardType" value="water_slime">
+                    <button class="button primary full-width" type="submit">Choose</button>
+                </form>
+            </article>
+
+            <article class="card-option">
+                <div class="type-pill">Electric Slime</div>
+                <h2>Electric Slime</h2>
+                <p>Choose this slime to enter battle.</p>
+                <form method="post" action="/battle/start">
+                    <input type="hidden" name="cardType" value="electric_slime">
+                    <button class="button primary full-width" type="submit">Choose</button>
+                </form>
+            </article>
+
+            <article class="card-option">
+                <div class="type-pill">Plant Slime</div>
+                <h2>Plant Slime</h2>
+                <p>Choose this slime to enter battle.</p>
+                <form method="post" action="/battle/start">
+                    <input type="hidden" name="cardType" value="plant_slime">
+                    <button class="button primary full-width" type="submit">Choose</button>
+                </form>
+            </article>
+        </div>
+    </section>
 </div>
 </body>
 </html>

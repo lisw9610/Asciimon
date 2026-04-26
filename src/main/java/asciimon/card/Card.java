@@ -228,9 +228,13 @@ public abstract class Card {
     }
 
     public void forgetMove(Move move) {
-        if (moves.remove(move)) {
-            currentMoveCount -= 1;
+        if (move == null) {
+            return;
         }
+
+        moves.removeIf(existingMove ->
+                existingMove != null &&
+                        existingMove.getMoveName().equalsIgnoreCase(move.getMoveName()));
     }
 
     public void replaceMove(Integer index, Move newMove) {
@@ -333,7 +337,9 @@ public abstract class Card {
         for (Integer i = 0; i < this.statNames.size(); i++) {
             Integer base = this.baseStats.get(i);
             Integer mod = this.statModifiers.get(i);
-            String modStr = (mod == 0) ? "" : (mod > 0 ? " (+" + mod + ")" : " (-" + mod + ")");
+            String modStr = (mod == 0)
+                    ? ""
+                    : (mod > 0 ? " (+" + mod + ")" : " (-" + Math.abs(mod) + ")");
             info.add(String.format("%-10s: %-6s%s", this.statNames.get(i), base, modStr));
         }
 
@@ -343,12 +349,9 @@ public abstract class Card {
         info.add("Moves:");
 
         for (int i = 0; i < maximumMoveCount; i++) {
-            String strMove;
-            if (i < moves.size()) {
-                Move move = moves.get(i);
-                strMove = (i + 1) + ". " + move.getMoveName();
-            } else {
-                strMove = (i + 1) + ". ---";
+            String strMove = "";
+            if (i < moves.size() && moves.get(i) != null) {
+                strMove = (i + 1) + ". " + moves.get(i).getMoveName();
             }
             info.add(String.format("%-" + CARD_WIDTH + "s", strMove));
         }
@@ -396,8 +399,24 @@ public abstract class Card {
         }
         
         out.append(border);
-        
+
         return out.toString();
+    }
+
+    public Integer getHealth() {
+        return this.baseStats.get(StatType.HEALTH.ordinal());
+    }
+
+    public Integer getBaseAttack() {
+        return this.baseStats.get(StatType.ATTACK.ordinal());
+    }
+
+    public Integer getBaseDefense() {
+        return this.baseStats.get(StatType.DEFENSE.ordinal());
+    }
+
+    public Integer getBaseSpeed() {
+        return this.baseStats.get(StatType.SPEED.ordinal());
     }
 
 }

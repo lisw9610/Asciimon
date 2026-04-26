@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Result</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="page">
-    <div class="panel hero">
-        <h1>Match Result</h1>
-        <p><strong th:text="${winner}">You</strong> won the battle.</p>
+    <section class="panel hero">
+        <p class="eyebrow">Match Complete</p>
+        <h1>[[${winner}]] won!</h1>
+        <p class="subtitle">Battle finished successfully.</p>
+
+        <div class="log-box">
+            <pre class="ascii-card">[[${battleLogText}]]</pre>
+        </div>
 
         <div class="nav-row">
-            <a class="button primary" th:href="@{/select}">Play Again</a>
-            <a class="button secondary" th:href="@{/}">Home</a>
+            <form method="get" action="/select">
+                <button class="button primary" type="submit">Play Again</button>
+            </form>
+            <form method="post" action="/reset">
+                <button class="button secondary" type="submit">Home</button>
+            </form>
         </div>
-    </div>
+    </section>
 </div>
 </body>
 </html>

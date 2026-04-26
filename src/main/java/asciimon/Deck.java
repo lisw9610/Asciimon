@@ -21,10 +21,10 @@ public class Deck {
         if (cardIndex >= 0 && cardIndex < deck.size()) {
             this.inPlay = deck.get(cardIndex);
         } else {
-            throw new IllegalArgumentException("Invalid card index.");
+            this.inPlay = null;
         }
 
-        return inPlay;
+        return this.inPlay;
     }
 
     public void discardCardInPlay() {
