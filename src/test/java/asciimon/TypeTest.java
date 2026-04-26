@@ -4,18 +4,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import asciimon.type.ElectricType;
+import asciimon.type.FireType;
+import asciimon.type.PlantType;
 import asciimon.type.Type;
-import asciimon.type.TypeInstances;
+import asciimon.type.WaterType;
 
 public class TypeTest {
-    private Type electric() { return TypeInstances.ELECTRIC_INSTANCE.getInstance(); }
-    private Type fire()     { return TypeInstances.FIRE_INSTANCE.getInstance(); }
-    private Type plant()    { return TypeInstances.PLANT_INSTANCE.getInstance(); }
-    private Type water()    { return TypeInstances.WATER_INSTANCE.getInstance(); }
+    private Type electric() { return ElectricType.getInstance(); }
+    private Type fire()     { return FireType.getInstance(); }
+    private Type plant()    { return PlantType.getInstance(); }
+    private Type water()    { return WaterType.getInstance(); }
 
     @Test
     void returnsSingletonFromTypeInstances() {
-        assertNull(Type.getInstance(), "Type.INSTANCE should be null by default");
         assertNotNull(electric());
         assertNotNull(fire());
         assertNotNull(plant());

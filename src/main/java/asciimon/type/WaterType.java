@@ -7,7 +7,7 @@ public class WaterType extends Type {
     private static final WaterType INSTANCE = new WaterType();
 
     private WaterType() {
-        super(List.of(FireType.getInstance()), List.of(ElectricType.getInstance()));
+        super(List.of("FIRE"), List.of("ELECTRIC"));
     }
 
     public static WaterType getInstance() {
@@ -16,6 +16,6 @@ public class WaterType extends Type {
 
     @Override
     public String toString() {
-        return "Fire";
+        return "WATER";
     }
 }

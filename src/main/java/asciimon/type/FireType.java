@@ -7,7 +7,7 @@ public class FireType extends Type {
     private static final FireType INSTANCE = new FireType();
 
     private FireType() {
-        super(List.of(PlantType.getInstance()), List.of(WaterType.getInstance()));
+        super(List.of("PLANT"), List.of("WATER"));
     }
 
     public static FireType getInstance() {
@@ -16,6 +16,6 @@ public class FireType extends Type {
 
     @Override
     public String toString() {
-        return "Fire";
+        return "FIRE";
     }
 }

@@ -7,7 +7,7 @@ public class PlantType extends Type {
     private static final PlantType INSTANCE = new PlantType();
 
     private PlantType() {
-        super(List.of(), List.of(FireType.getInstance()));
+        super(List.of("ELECTRIC"), List.of("FIRE"));
     }
 
     public static PlantType getInstance() {
@@ -16,6 +16,6 @@ public class PlantType extends Type {
 
     @Override
     public String toString() {
-        return "Fire";
+        return "PLANT";
     }
 }

@@ -7,7 +7,7 @@ public class ElectricType extends Type {
     private static final ElectricType INSTANCE = new ElectricType();
 
     private ElectricType() {
-        super(List.of(WaterType.getInstance()), List.of());
+        super(List.of("WATER"), List.of("PLANT"));
     }
 
     public static ElectricType getInstance() {
@@ -16,6 +16,6 @@ public class ElectricType extends Type {
 
     @Override
     public String toString() {
-        return "Fire";
+        return "ELECTRIC";
     }
 }

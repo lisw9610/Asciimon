@@ -2,6 +2,7 @@ package asciimon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,11 +24,11 @@ public class DeckTest {
 
         assertNull(deck.getCardInPlay(), "Initially no card should be in play");
 
-        deck.pickCard(-1);
-        assertNull(deck.getCardInPlay());
+        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(-1),"Picking a negative index should throw IllegalArgumentException");
 
-        deck.pickCard(0);
-        assertNull(deck.getCardInPlay());
+
+        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(0), "Picking index 2 should throw IllegalArgumentException");
+
     }
 
     @Test
@@ -48,8 +49,8 @@ public class DeckTest {
         deck.pickCard(1);
         assertEquals(c2, deck.getCardInPlay(), "Picking index 1 should set second card as in play");
 
-        deck.pickCard(2); 
-        assertNull(deck.getCardInPlay());
+
+        assertThrows(IllegalArgumentException.class, () -> deck.pickCard(2), "Picking index 2 should throw IllegalArgumentException");
     }
 
     @Test

@@ -13,6 +13,7 @@ public class PlantSlime extends Card {
 
         this.learnMove(MoveFactory.getMoveInstance("razorleaf"));
         this.learnMove(MoveFactory.getMoveInstance("restoration"));
+        this.learnMove(MoveFactory.getMoveInstance("poison needle"));
     }
 
 }

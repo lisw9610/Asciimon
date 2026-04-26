@@ -11,7 +11,7 @@ public class TurnAction {
         this.switchIndex = switchIndex;
     }
 
-    public static TurnAction attack(Player player, int moveIndex) {
+    public static TurnAction move(Player player, int moveIndex) {
         return new TurnAction(player, moveIndex, null);
     }
 

@@ -54,7 +54,6 @@ public class Match {
         Card c1 = a1.getPlayer().getActiveCard();
         Card c2 = a2.getPlayer().getActiveCard();
 
-        // Switching ALWAYS goes first
         if (a1.isSwitching() && !a2.isSwitching()) {
             executeSwitch(a1);
             executeAction(a2, c2, c1);
@@ -74,18 +73,7 @@ public class Match {
             return;
         }
 
-        int speed1 = c1.getModifiedStat(StatType.SPEED);
-        int speed2 = c2.getModifiedStat(StatType.SPEED);
-
-        boolean p1First;
-
-        if (speed1 > speed2) {
-            p1First = true;
-        } else if (speed2 > speed1) {
-            p1First = false;
-        } else {
-            p1First = random.nextBoolean();
-        }
+        boolean p1First = compareSpeed(c1, c2);
 
         if (p1First) {
             executeAction(a1, c1, c2);
@@ -98,6 +86,20 @@ public class Match {
                 executeAction(a1, c1, c2);
             }
         }
+    }
+
+    private boolean compareSpeed(Card c1, Card c2) {
+        int speed1 = c1.getModifiedStat(StatType.SPEED);
+        int speed2 = c2.getModifiedStat(StatType.SPEED);
+
+        if (speed1 > speed2) {
+            return true;
+        } else if (speed2 > speed1) {
+            return false;
+        } else {
+            return random.nextBoolean();
+        }
+
     }
 
     private void executeAction(TurnAction action, Card user, Card target) {

@@ -3,13 +3,13 @@ package asciimon.type;
 import java.util.List;
 
 public abstract class Type { 
-    protected List<Type> advantageAgainst;
-    protected List<Type> disadvantageAgainst;
+    protected List<String> advantageAgainst;
+    protected List<String> disadvantageAgainst;
     private Double advantageModifier;
     private Double disadvantageModifier;
 
 
-    protected Type(List<Type> advantageAgainst, List<Type> disadvantageAgainst) {
+    protected Type(List<String> advantageAgainst, List<String> disadvantageAgainst) {
         this.advantageAgainst = advantageAgainst;
         this.disadvantageAgainst = disadvantageAgainst;
         this.advantageModifier = 2.0;
@@ -25,11 +25,11 @@ public abstract class Type {
     }
 
     public boolean hasAdvantageAgainst(Type type) {
-        return advantageAgainst.contains(type);
+        return advantageAgainst.contains(type.toString());
     }
 
     public boolean hasDisadvantageAgainst(Type type) {
-        return disadvantageAgainst.contains(type);
+        return disadvantageAgainst.contains(type.toString());
     }
 
     public double getEffectiveness(Type enemyType) {

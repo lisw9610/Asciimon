@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import asciimon.move.Move;
-import asciimon.move.StatusEffectTracker;
+import asciimon.status_effects.StatusEffectTracker;
 import asciimon.type.Type;
 
 public abstract class Card {
@@ -69,7 +69,7 @@ public abstract class Card {
         return this.requiredExperience;
     }
 
-    private Integer getStat(StatType stat) {
+    public Integer getStat(StatType stat) {
         return this.baseStats.get(stat.ordinal());
     }
 
@@ -146,17 +146,17 @@ public abstract class Card {
         List<StatusEffectTracker> expired = new ArrayList<>();
 
         for (StatusEffectTracker effect : statusEffects) {
-            effect.apply(this);
-            effect.turnPasses();
+            effect.processTurn(this);
 
-            if (effect.hasExpired()) {
-                effect.getStatusEffect().onExpire(this);
+            if (effect.isExpired()) {
+                effect.expire(this);
                 expired.add(effect);
             }
         }
 
         statusEffects.removeAll(expired);
     }
+
 
 
     //============================================LEVELING===============================================
@@ -248,7 +248,7 @@ public abstract class Card {
 
     //============================================TURN HANDLING===============================================
 
-    private void turnPasses() {
+    public void turnPasses() {
         processStatusEffects();
     }
 
