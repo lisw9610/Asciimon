@@ -11,7 +11,7 @@ public class ElectricSlime extends Card {
         super(name, asciiArt, baseStats, experienceModifier, statIncreaseOnLevelUp, ElectricType.getInstance());
 
         this.learnMove(MoveFactory.getMoveInstance("discharge"));
-        this.learnMove(MoveFactory.getMoveInstance("paralyza"));
+        this.learnMove(MoveFactory.getMoveInstance("paralyze"));
     }
 
 }

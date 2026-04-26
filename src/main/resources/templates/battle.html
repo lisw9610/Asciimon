@@ -1,45 +1,86 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Battle</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="page">
-    <div class="panel">
-        <h1>Battle Arena</h1>
-        <p>This is a placeholder battle screen so your pages run end-to-end.</p>
+    <section class="panel">
+        <div class="top-row">
+            <div>
+                <p class="eyebrow">Battle Arena</p>
+                <h1>[[${playerName}]] vs Enemy</h1>
+                <p class="subtitle">Choose a move to play one turn.</p>
+            </div>
+            <form method="post" action="/reset">
+                <button class="button secondary" type="submit">Reset</button>
+            </form>
+        </div>
 
         <div class="battle-layout">
-            <div class="battle-card">
-                <h2>Your Card</h2>
-                <p class="big-text" th:text="${selectedCard}">Fire Slime</p>
-                <p>HP: 100</p>
-                <p>Level: 1</p>
-            </div>
+            <article class="battle-card">
+                <p class="card-owner">Player</p>
+                <h2>[[${playerCardName}]]</h2>
+                <p class="type-text">Type: [[${playerType}]]</p>
+                <p>HP: [[${playerHp}]] / [[${playerMaxHp}]]</p>
+                <p>Level: [[${playerLevel}]]</p>
+                <pre class="ascii-card">[[${playerAscii}]]</pre>
+            </article>
 
-            <div class="battle-card enemy">
-                <h2>Enemy Card</h2>
-                <p class="big-text" th:text="${enemyCard}">Wild Slime</p>
-                <p>HP: 100</p>
-                <p>Level: 1</p>
-            </div>
+            <article class="battle-card enemy">
+                <p class="card-owner">Enemy</p>
+                <h2>[[${enemyCardName}]]</h2>
+                <p class="type-text">Type: [[${enemyType}]]</p>
+                <p>HP: [[${enemyHp}]] / [[${enemyMaxHp}]]</p>
+                <p>Level: [[${enemyLevel}]]</p>
+                <pre class="ascii-card">[[${enemyAscii}]]</pre>
+            </article>
         </div>
 
-        <div class="moves">
-            <h2>Moves</h2>
+        <section class="moves-section">
+            <h2>Your Moves</h2>
             <div class="move-buttons">
-                <a class="button primary" th:each="moveName : ${moves}" th:text="${moveName}" th:href="@{/result(winner='You')}">Basic Attack</a>
-            </div>
-        </div>
+                <form id="moveForm0" method="post" action="/battle/move">
+                    <input type="hidden" name="moveIndex" value="0">
+                    <button id="moveBtn0" class="button primary" type="submit">[[${move0Label}]]</button>
+                </form>
 
-        <div class="nav-row">
-            <a class="button secondary" th:href="@{/select}">Back to Select</a>
-            <a class="button secondary" th:href="@{/result(winner='You')}">Skip to Result</a>
-        </div>
-    </div>
+                <form id="moveForm1" method="post" action="/battle/move">
+                    <input type="hidden" name="moveIndex" value="1">
+                    <button id="moveBtn1" class="button primary" type="submit">[[${move1Label}]]</button>
+                </form>
+
+                <form id="moveForm2" method="post" action="/battle/move">
+                    <input type="hidden" name="moveIndex" value="2">
+                    <button id="moveBtn2" class="button primary" type="submit">[[${move2Label}]]</button>
+                </form>
+
+                <form id="moveForm3" method="post" action="/battle/move">
+                    <input type="hidden" name="moveIndex" value="3">
+                    <button id="moveBtn3" class="button primary" type="submit">[[${move3Label}]]</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="log-section">
+            <h2>Battle Log</h2>
+            <div class="log-box">
+                <pre class="ascii-card">[[${battleLogText}]]</pre>
+            </div>
+        </section>
+    </section>
 </div>
+
+<script>
+    document.querySelectorAll(".button.primary").forEach(function(btn) {
+        if (btn.textContent.trim() === "Unavailable") {
+            btn.closest("form").style.display = "none";
+        }
+    });
+</script>
+
 </body>
 </html>

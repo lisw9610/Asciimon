@@ -1,21 +1,27 @@
 package asciimon.type;
 
-import java.util.List;
-
 public class WaterType extends Type {
 
     private static final WaterType INSTANCE = new WaterType();
 
-    private WaterType() {
-        super(List.of(FireType.getInstance()), List.of(ElectricType.getInstance()));
-    }
+    private WaterType() {}
 
     public static WaterType getInstance() {
         return INSTANCE;
     }
 
     @Override
+    public boolean hasAdvantageAgainst(Type type) {
+        return type instanceof FireType;
+    }
+
+    @Override
+    public boolean hasDisadvantageAgainst(Type type) {
+        return type instanceof ElectricType;
+    }
+
+    @Override
     public String toString() {
-        return "Fire";
+        return "WATER";
     }
 }

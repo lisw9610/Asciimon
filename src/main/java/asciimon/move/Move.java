@@ -10,8 +10,7 @@ public abstract class Move {
     private StatType impactedStat;
     private Integer statImpact;
     private Integer impactDuration;
-    private boolean targetsEnemy; //true if it targets an enemy(attack and debuff) and false if it targets self(support)
-
+    private boolean targetsEnemy;
 
     public Move(String moveName, Type moveType, StatType impactedStat, Integer statImpact, Integer impactDuration, boolean targetsEnemy) {
         this.moveName = moveName;
@@ -30,7 +29,11 @@ public abstract class Move {
         return this.moveType;
     }
 
-    public StatType getImpactedStat() {
+    public String getImpactedStat() {
+        return this.impactedStat.name().toLowerCase();
+    }
+
+    public StatType getImpactedStatEnum() {
         return this.impactedStat;
     }
 
@@ -51,5 +54,4 @@ public abstract class Move {
     public void onExpire(Card target) {}
 
     public abstract void executeMove(Card user, Card target);
-
 }
