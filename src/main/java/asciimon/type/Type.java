@@ -1,8 +1,20 @@
 package asciimon.type;
 
-public abstract class Type {
-    private final double advantageModifier = 2.0;
-    private final double disadvantageModifier = 0.5;
+import java.util.List;
+
+public abstract class Type { 
+    protected List<String> advantageAgainst;
+    protected List<String> disadvantageAgainst;
+    private Double advantageModifier;
+    private Double disadvantageModifier;
+
+
+    protected Type(List<String> advantageAgainst, List<String> disadvantageAgainst) {
+        this.advantageAgainst = advantageAgainst;
+        this.disadvantageAgainst = disadvantageAgainst;
+        this.advantageModifier = 2.0;
+        this.disadvantageModifier = 0.5;
+    }
 
     public Double getAdvantageModifier() {
         return this.advantageModifier;
@@ -10,6 +22,14 @@ public abstract class Type {
 
     public Double getDisadvantageModifier() {
         return this.disadvantageModifier;
+    }
+
+    public boolean hasAdvantageAgainst(Type type) {
+        return advantageAgainst.contains(type.toString());
+    }
+
+    public boolean hasDisadvantageAgainst(Type type) {
+        return disadvantageAgainst.contains(type.toString());
     }
 
     public double getEffectiveness(Type enemyType) {

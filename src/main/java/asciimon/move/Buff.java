@@ -2,6 +2,8 @@ package asciimon.move;
 
 import asciimon.card.Card;
 import asciimon.card.StatType;
+import asciimon.status_effects.BuffEffect;
+import asciimon.status_effects.StatusEffectTracker;
 import asciimon.type.Type;
 
 public class Buff extends Move {
@@ -12,8 +14,9 @@ public class Buff extends Move {
 
     @Override
     public void executeMove(Card user, Card target) {
-        user.updateModifier(getImpactedStatEnum(), getStatImpact());
-        user.addStatusEffect(new StatusEffectTracker(getImpactDuration(), this));
+        BuffEffect effect = new BuffEffect(getImpactedStat(), getStatImpact());
+        user.addStatusEffect(new StatusEffectTracker(getImpactDuration(), effect, user));
+
     }
 
     public void onExpire(Card target) {

@@ -8,10 +8,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import asciimon.type.ElectricType;
 import asciimon.type.Type;
-import asciimon.type.TypeInstances;
 import asciimon.card.Card;
 import asciimon.card.CardFactory;
+import asciimon.card.ElectricSlime;
+import asciimon.card.StatType;
 import asciimon.move.MoveFactory;
 
 class CardTest {
@@ -30,7 +32,7 @@ class CardTest {
         List<Integer> baseStats = Arrays.asList(5, 1, 2, 3);
         Integer experienceModifier = 1;
         List<Integer> statIncreaseOnLevelUp = Arrays.asList(5, 1, 2, 3); // health, atk, def, spd
-        testCard = new DummyCard("Tester", asciiArt, baseStats, experienceModifier, statIncreaseOnLevelUp, TypeInstances.ELECTRIC_INSTANCE.getInstance());
+        testCard = new DummyCard("Tester", asciiArt, baseStats, experienceModifier, statIncreaseOnLevelUp, ElectricType.getInstance());
     }
 
     @Test
@@ -41,11 +43,11 @@ class CardTest {
         assertEquals(100, testCard.getExperienceForNextLevel());
         assertEquals(50, testCard.getMaxHealthPoints());
         assertEquals(50, testCard.getHealthPoints());
-        assertEquals(5, testCard.getHealth());
-        assertEquals(1, testCard.getBaseAttack());
-        assertEquals(2, testCard.getBaseDefense());
-        assertEquals(3, testCard.getBaseSpeed());
-        assertEquals(TypeInstances.ELECTRIC_INSTANCE.getInstance(), testCard.getType());
+        assertEquals(5, testCard.getModifiedStat(StatType.HEALTH));
+        assertEquals(1, testCard.getModifiedStat(StatType.ATTACK));
+        assertEquals(2, testCard.getModifiedStat(StatType.DEFENSE));
+        assertEquals(3, testCard.getModifiedStat(StatType.SPEED));
+        assertEquals(ElectricType.getInstance(), testCard.getType());
         assertEquals(4, testCard.getMaxMoveCount());
     }
 
@@ -70,10 +72,10 @@ class CardTest {
         assertEquals(2, testCard.getLevel());
         assertEquals(2, testCard.getCurrentExp());
  
-        assertEquals(10, testCard.getHealth());
-        assertEquals(2, testCard.getBaseAttack());
-        assertEquals(4, testCard.getBaseDefense()); 
-        assertEquals(6, testCard.getBaseSpeed());
+        assertEquals(10, testCard.getModifiedStat(StatType.HEALTH));
+        assertEquals(2, testCard.getModifiedStat(StatType.ATTACK));
+        assertEquals(4, testCard.getModifiedStat(StatType.DEFENSE));
+        assertEquals(6, testCard.getModifiedStat(StatType.SPEED));
     }
 
     @Test
@@ -103,10 +105,10 @@ class CardTest {
         Card c2 = CardFactory.createCard("B", "plant_slime");
 
         c1.doTurn(0, c2);
-        assertEquals(90, c2.getHealthPoints());
+        assertEquals(60, c2.getHealthPoints());
 
         c2.doTurn(1, c1);
-        assertEquals(100, c2.getHealthPoints());
+        assertEquals(70, c2.getHealthPoints());
     }
 
     @Test

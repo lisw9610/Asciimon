@@ -6,7 +6,7 @@ import asciimon.type.Type;
 
 public class Attack extends Move {
     public Attack(String name, Type type, int power) {
-        super(name, type, StatType.HEALTH, power, 0, true);
+        super(name, type, null, power, 0, true);
     }
 
     @Override

@@ -1,23 +1,17 @@
 package asciimon.type;
 
+import java.util.List;
+
 public class PlantType extends Type {
 
     private static final PlantType INSTANCE = new PlantType();
 
-    private PlantType() {}
+    private PlantType() {
+        super(List.of("ELECTRIC"), List.of("FIRE"));
+    }
 
     public static PlantType getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public boolean hasAdvantageAgainst(Type type) {
-        return type instanceof ElectricType;
-    }
-
-    @Override
-    public boolean hasDisadvantageAgainst(Type type) {
-        return type instanceof FireType;
     }
 
     @Override

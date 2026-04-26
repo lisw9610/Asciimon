@@ -12,6 +12,7 @@ public class FireSlime extends Card {
 
         this.learnMove(MoveFactory.getMoveInstance("fireball"));
         this.learnMove(MoveFactory.getMoveInstance("overheat"));
+        this.learnMove(MoveFactory.getMoveInstance("flamethrower"));
     }
 
 }

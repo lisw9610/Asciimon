@@ -1,23 +1,17 @@
 package asciimon.type;
 
+import java.util.List;
+
 public class FireType extends Type {
 
     private static final FireType INSTANCE = new FireType();
 
-    private FireType() {}
+    private FireType() {
+        super(List.of("PLANT"), List.of("WATER"));
+    }
 
     public static FireType getInstance() {
         return INSTANCE;
-    }
-
-    @Override
-    public boolean hasAdvantageAgainst(Type type) {
-        return type instanceof PlantType;
-    }
-
-    @Override
-    public boolean hasDisadvantageAgainst(Type type) {
-        return type instanceof WaterType;
     }
 
     @Override
